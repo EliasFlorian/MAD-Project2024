@@ -26,13 +26,14 @@ class AuthRepository {
         }
     }
 
-    suspend fun register(nickName: String, email: String, displayedName: String, password: String): Result<Void> {
+    suspend fun register(nickName: String, email: String, displayedName: String, password: String): Result<Any> {
         return withContext(Dispatchers.IO) {
             try {
                 val createUser = CreateUser(nickName, email, displayedName, password)
                 val response = api.register(createUser).execute()
                 if (response.isSuccessful) {
-                    Result.success(response.body()!!)
+                    val body = response.body()
+                    Result.success(body ?: "Response body was null")
                 } else {
                     Result.failure(Exception("Failed to register: ${response.message()}"))
                 }

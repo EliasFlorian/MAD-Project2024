@@ -23,29 +23,52 @@ fun AuthScreen(viewModel: AuthViewModel = viewModel()) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = if (authState.isRegister) "Register" else "Login", style = MaterialTheme.typography.headlineMedium)
+        Text(
+            text = if (authState.isRegister) "Register" else "Login",
+            style = MaterialTheme.typography.headlineMedium
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = authState.email,
-            onValueChange = { viewModel.onEmailChange(it) },
-            label = { Text("Email") },
+            value = authState.username,
+            onValueChange = { viewModel.onUsernameChange(it) },
+            label = { Text("Username") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        OutlinedTextField(
-            value = authState.password,
-            onValueChange = { viewModel.onPasswordChange(it) },
-            label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
-        )
+        if (!authState.isRegister) {
+            OutlinedTextField(
+                value = authState.password,
+                onValueChange = { viewModel.onPasswordChange(it) },
+                label = { Text("Password") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
+            )
+        } else {
+            OutlinedTextField(
+                value = authState.displayedName,
+                onValueChange = { viewModel.onDisplayedNameChange(it) },
+                label = { Text("Displayed Name") },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        if (authState.isRegister) {
-            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedTextField(
+                value = authState.email,
+                onValueChange = { viewModel.onEmailChange(it) },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = authState.password,
+                onValueChange = { viewModel.onPasswordChange(it) },
+                label = { Text("Password") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
+            )
 
             OutlinedTextField(
                 value = authState.confirmPassword,
