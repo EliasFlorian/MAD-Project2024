@@ -2,6 +2,7 @@ package com.example.mad_project2024.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mad_project2024.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -16,6 +17,7 @@ data class AuthState(
 
 class AuthViewModel : ViewModel() {
     private val _authState = MutableStateFlow(AuthState())
+    private val repository = AuthRepository();
     val authState = _authState.asStateFlow()
 
     fun onEmailChange(newEmail: String) {
@@ -37,7 +39,12 @@ class AuthViewModel : ViewModel() {
     fun login() {
         // Simulate API call
         viewModelScope.launch {
-            _authState.value = _authState.value.copy(errorMessage = "Login successful")
+            val result = repository.login(_authState.value.email, _authState.value.password)
+            if (result.isSuccess) {
+                _authState.value = _authState.value.copy(errorMessage = result.exceptionOrNull()?.message)
+            } else {
+                _authState.value = _authState.value.copy(errorMessage = result.exceptionOrNull()?.message)
+            }
         }
     }
 
