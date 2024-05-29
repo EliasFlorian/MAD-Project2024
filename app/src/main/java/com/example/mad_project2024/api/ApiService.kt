@@ -1,9 +1,11 @@
-import com.data.model.MessageResponse
-import com.data.model.auth.OAuth2PasswordRequest
-import com.data.model.auth.Token
-import com.data.model.user.CreateUser
-import com.data.model.user.ListUser
-import com.data.model.user.SelfUpdateUser
+package com.example.mad_project2024.api
+
+import com.example.mad_project2024.models.MessageResponse
+import com.example.mad_project2024.models.auth.OAuth2PasswordRequest
+import com.example.mad_project2024.models.auth.Token
+import com.example.mad_project2024.models.user.CreateUser
+import com.example.mad_project2024.models.user.ListUser
+import com.example.mad_project2024.models.user.SelfUpdateUser
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE

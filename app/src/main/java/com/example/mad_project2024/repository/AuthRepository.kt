@@ -1,9 +1,9 @@
-package com.data.repository
+package com.example.mad_project2024.repository
 
-import com.data.api.RetrofitClient
-import com.data.model.auth.OAuth2PasswordRequest
-import com.data.model.auth.Token
-import com.data.model.user.CreateUser
+import com.example.mad_project2024.api.RetrofitClient
+import com.example.mad_project2024.models.auth.OAuth2PasswordRequest
+import com.example.mad_project2024.models.auth.Token
+import com.example.mad_project2024.models.user.CreateUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

@@ -1,4 +1,4 @@
-package com.data.model.auth
+package com.example.mad_project2024.models.auth
 
 data class Token(
     val access_token: String,

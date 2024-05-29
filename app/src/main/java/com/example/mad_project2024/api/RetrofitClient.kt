@@ -1,6 +1,5 @@
-package com.data.api
+package com.example.mad_project2024.api
 
-import ApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

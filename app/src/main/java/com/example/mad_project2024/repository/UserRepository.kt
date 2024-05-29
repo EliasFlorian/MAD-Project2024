@@ -1,9 +1,9 @@
-package com.data.repository
+package com.example.mad_project2024.repository
 
-import com.data.api.RetrofitClient
-import com.data.model.MessageResponse
-import com.data.model.user.ListUser
-import com.data.model.user.SelfUpdateUser
+import com.example.mad_project2024.api.RetrofitClient
+import com.example.mad_project2024.models.MessageResponse
+import com.example.mad_project2024.models.user.ListUser
+import com.example.mad_project2024.models.user.SelfUpdateUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
