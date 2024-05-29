@@ -1,7 +1,6 @@
 package com.example.mad_project2024.api
 
 import com.example.mad_project2024.models.MessageResponse
-import com.example.mad_project2024.models.auth.OAuth2PasswordRequest
 import com.example.mad_project2024.models.auth.Token
 import com.example.mad_project2024.models.user.CreateUser
 import com.example.mad_project2024.models.user.ListUser
@@ -9,6 +8,8 @@ import com.example.mad_project2024.models.user.SelfUpdateUser
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -18,9 +19,12 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+    @FormUrlEncoded
     @POST("auth/login")
-    @Headers("Content-Type: application/json")
-    fun login(@Body form: OAuth2PasswordRequest): Call<Token>
+    fun login(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Call<Token>
 
     @POST("auth/register")
     @Headers("Content-Type: application/json")
