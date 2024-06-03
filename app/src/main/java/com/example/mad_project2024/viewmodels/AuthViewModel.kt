@@ -49,6 +49,7 @@ class AuthViewModel : ViewModel() {
     fun login() {
         // Simulate API call
         viewModelScope.launch {
+            //TODO Has Password before repository.login
             val result = repository.login(_authState.value.username, _authState.value.password)
             if (result.isSuccess) {
                 _authState.value = _authState.value.copy(errorMessage = "Logged In successfully!")
@@ -64,6 +65,7 @@ class AuthViewModel : ViewModel() {
             if (_authState.value.password != _authState.value.confirmPassword) {
                 _authState.value = _authState.value.copy(errorMessage = "Passwords do not match")
             } else {
+                //TODO Has Password before repository.register
                 val result = repository.register(_authState.value.username,
                     _authState.value.email, _authState.value.displayedName, _authState.value.password)
 
