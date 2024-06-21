@@ -34,8 +34,13 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        viewBinding = true
+        compose = true
+        dataBinding = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+
 }
 
 dependencies {
@@ -46,7 +51,29 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Compose dependencies
+    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation("androidx.compose.ui:ui:1.6.7")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.6.7")
+    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
+
+    // Coil for image loading
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.7")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.6.7")
+    implementation(kotlin("script-runtime"))
 }
