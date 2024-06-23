@@ -1,20 +1,23 @@
 package com.example.mad_project2024.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mad_project2024.models.Country
 import com.example.mad_project2024.viewmodels.AuthViewModel
 
 @Composable
 fun AuthScreen(viewModel: AuthViewModel = viewModel()) {
     val authState by viewModel.authState.collectAsState()
+    val countries by viewModel.countries.collectAsState(emptyList())
+    var isDropdownExpanded by remember { mutableStateOf(false) }
+    var selectedCountry by remember { mutableStateOf<Country?>(null) }
 
     Column(
         modifier = Modifier
@@ -77,6 +80,36 @@ fun AuthScreen(viewModel: AuthViewModel = viewModel()) {
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation()
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Box(modifier = Modifier.fillMaxWidth()) {
+                OutlinedTextField(
+                    value = selectedCountry?.country_name ?: "Select Country",
+                    onValueChange = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { isDropdownExpanded = true },
+                    label = { Text("Country") },
+                    readOnly = true
+                )
+                DropdownMenu(
+                    expanded = isDropdownExpanded,
+                    onDismissRequest = { isDropdownExpanded = false },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    countries.forEach { country ->
+                        DropdownMenuItem(
+                            text = { Text(text = country.country_name) },
+                            onClick = {
+                                selectedCountry = country
+                                viewModel.onCountryChange(country.code)
+                                isDropdownExpanded = false
+                            }
+                        )
+                    }
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
