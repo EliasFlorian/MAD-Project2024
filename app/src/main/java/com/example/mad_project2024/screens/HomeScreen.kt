@@ -8,6 +8,8 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mad_project2024.R
 import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
+import com.example.mad_project2024.components.TopAppBar
+import com.example.mad_project2024.components.BottomBar
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -37,22 +41,14 @@ fun HomeScreen() {
             BottomBar()
         }
 
-
-
-
-
-
     ) {innerPadding ->
-     
-
-
 
         Column(
-modifier = Modifier
-.fillMaxSize()
-.padding(32.dp),
-horizontalAlignment = Alignment.CenterHorizontally,
-verticalArrangement = Arrangement.Center
+            modifier = Modifier
+            .fillMaxSize()
+            .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
 
 ) {
     ModeCard(title = stringResource(R.string.travel_mode), description = stringResource(R.string.description_travel_mode))
@@ -61,8 +57,6 @@ verticalArrangement = Arrangement.Center
 }
 
     }
-
-
 
 }
 
@@ -83,88 +77,25 @@ fun ModeCard(title: String, description: String, modifier:Modifier = Modifier) {
         Text(
             text = title,
             modifier = Modifier
-                .padding(8.dp),
+                .padding(16.dp),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.displaySmall
+            style = MaterialTheme.typography.titleLarge
         )
 
         Spacer(Modifier.size(8.dp))
 
         Text(
             text = description,
-            modifier = Modifier.padding(8.dp),
-            textAlign = TextAlign.Center,
-            color = Color.Black
+            modifier = Modifier.padding(16.dp, top = 0.dp, bottom = 16.dp),
+            style = MaterialTheme.typography.bodyLarge
         )
     }
 
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopAppBar(title: String) {
-
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        title,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.Center
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { /* do something */ }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { /* do something */ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Menu,
-                            contentDescription = "Localized description"
-                        )
-                    }
-                },
-
-            )
-
-}
 
 
-@Composable
-fun BottomBar(
-
-) {
-    BottomAppBar(
-        actions = {
-            IconButton(onClick = { /* do something */ }) {
-                Icon(Icons.Filled.Home, contentDescription = "Localized description")
-            }
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    Icons.Filled.Favorite,
-                    contentDescription = "Localized description",
-                )
-            }
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    Icons.Filled.AccountCircle,
-                    contentDescription = "Localized description",
-                )
-            }
-
-        }
-    )
-}
 
 
 @Preview(showBackground = true)

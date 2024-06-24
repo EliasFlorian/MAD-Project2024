@@ -12,6 +12,13 @@
     <string name="description_travel_mode">nisl tincidunt eget nullamh tellus molestie nunc non blandit massa enim nec dui nunc mattis eni auctor eu augue ut lectus arcu bibendum at varius</string>
     <string name="description_general_mode">auctor eu augue ut lectus arcu bibendum at varius vel pharetra vel im facilisis gravida neque eget nullamh tellus molestie nunc non blandit massa</string>
 
+    <string name="com_general">General</string>
+    <string name="com_communication">Communication</string>
+    <string name="com_travel">Travel</string>
+    <string name="com_description_general">Includes information about public holidays, healthcare systems, restrictions, fun facts, and dos and don’ts of a specific country.</string>
+    <string name="com_description_communication">Covers local greetings, etiquette, expectations, popular phrases, and gestures and facial expressions.</string>
+    <string name="com_description_travel">Provides details on public transport, payment norms, traveling by car or on foot, risks and dangers, shopping, and gastronomy.</string>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
