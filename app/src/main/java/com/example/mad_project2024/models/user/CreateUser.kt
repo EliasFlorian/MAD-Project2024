@@ -5,5 +5,5 @@ data class CreateUser(
     val email: String,
     val displayedName: String,
     val password: String,
-    val country: String
+    val homeCountry: String
 )

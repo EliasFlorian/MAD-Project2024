@@ -103,7 +103,7 @@ fun AuthScreen(viewModel: AuthViewModel = viewModel()) {
                             text = { Text(text = country.country_name) },
                             onClick = {
                                 selectedCountry = country
-                                viewModel.onCountryChange(country.code)
+                                viewModel.onCountryChange(selectedCountry!!.code)
                                 isDropdownExpanded = false
                             }
                         )
