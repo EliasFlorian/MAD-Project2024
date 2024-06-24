@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -31,7 +34,7 @@ fun HomeScreen() {
             TopAppBar(title = stringResource(id = R.string.app_name))
         },
         bottomBar = {
-
+            BottomBar()
         }
 
 
@@ -39,7 +42,23 @@ fun HomeScreen() {
 
 
 
-    ) {
+    ) {innerPadding ->
+     
+
+
+
+        Column(
+modifier = Modifier
+.fillMaxSize()
+.padding(32.dp),
+horizontalAlignment = Alignment.CenterHorizontally,
+verticalArrangement = Arrangement.Center
+
+) {
+    ModeCard(title = stringResource(R.string.travel_mode), description = stringResource(R.string.description_travel_mode))
+    Spacer(Modifier.size(64.dp))
+    ModeCard(title = stringResource(R.string.general_mode), description = stringResource(R.string.description_general_mode))
+}
 
     }
 
@@ -49,18 +68,7 @@ fun HomeScreen() {
 
 
 
-//Column(
-//modifier = Modifier
-//.fillMaxSize()
-//.padding(32.dp),
-//horizontalAlignment = Alignment.CenterHorizontally,
-//verticalArrangement = Arrangement.Center
-//
-//) {
-//    ModeCard(title = stringResource(R.string.travel_mode), description = stringResource(R.string.description_travel_mode))
-//    Spacer(Modifier.size(64.dp))
-//    ModeCard(title = stringResource(R.string.general_mode), description = stringResource(R.string.description_general_mode))
-//}
+
 
 @Composable
 fun ModeCard(title: String, description: String, modifier:Modifier = Modifier) {
@@ -129,6 +137,33 @@ fun TopAppBar(title: String) {
 
             )
 
+}
+
+
+@Composable
+fun BottomBar(
+
+) {
+    BottomAppBar(
+        actions = {
+            IconButton(onClick = { /* do something */ }) {
+                Icon(Icons.Filled.Home, contentDescription = "Localized description")
+            }
+            IconButton(onClick = { /* do something */ }) {
+                Icon(
+                    Icons.Filled.Favorite,
+                    contentDescription = "Localized description",
+                )
+            }
+            IconButton(onClick = { /* do something */ }) {
+                Icon(
+                    Icons.Filled.AccountCircle,
+                    contentDescription = "Localized description",
+                )
+            }
+
+        }
+    )
 }
 
 
