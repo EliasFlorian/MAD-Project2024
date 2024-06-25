@@ -19,6 +19,43 @@
     <string name="com_description_communication">Covers local greetings, etiquette, expectations, popular phrases, and gestures and facial expressions.</string>
     <string name="com_description_travel">Provides details on public transport, payment norms, traveling by car or on foot, risks and dangers, shopping, and gastronomy.</string>
 
+<!--    dummy answers start -->
+
+    <string name="general1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="general2">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="general3">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="general4">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</string>
+    <string name="general5">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="general6">Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.</string>
+    <string name="general7">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</string>
+    <string name="general8">In ac dui quis mi consectetuer lacinia.</string>
+    <string name="general9">Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum.</string>
+    <string name="general10">Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris.</string>
+
+    <string name="communication1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="communication2">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="communication3">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="communication4">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</string>
+    <string name="communication5">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="communication6">Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.</string>
+    <string name="communication7">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</string>
+    <string name="communication8">In ac dui quis mi consectetuer lacinia.</string>
+    <string name="communication9">Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum.</string>
+    <string name="communication10">Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris.</string>
+
+    <string name="travel_guide1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="travel_guide2">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="travel_guide3">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="travel_guide4">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</string>
+    <string name="travel_guide5">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="travel_guide6">Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.</string>
+    <string name="travel_guide7">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</string>
+    <string name="travel_guide8">In ac dui quis mi consectetuer lacinia.</string>
+    <string name="travel_guide9">Nam pretium turpis et arcu. Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum.</string>
+    <string name="travel_guide10">Integer ante arcu, accumsan a, consectetuer eget, posuere ut, mauris.</string>
+
+<!--    dummy answers end -->
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus

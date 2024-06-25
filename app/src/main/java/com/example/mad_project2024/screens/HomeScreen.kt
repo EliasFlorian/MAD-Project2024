@@ -46,7 +46,7 @@ fun HomeScreen() {
         Column(
             modifier = Modifier
             .fillMaxSize()
-            .padding(32.dp),
+            .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
 
@@ -86,7 +86,7 @@ fun ModeCard(title: String, description: String, modifier:Modifier = Modifier) {
 
         Text(
             text = description,
-            modifier = Modifier.padding(16.dp, top = 0.dp, bottom = 16.dp),
+            modifier = Modifier.padding(start = 16.dp, top = 0.dp, bottom = 16.dp, end = 16.dp),
             style = MaterialTheme.typography.bodyLarge
         )
     }

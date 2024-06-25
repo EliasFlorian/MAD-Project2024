@@ -4,8 +4,16 @@ package com.example.mad_project2024.screens
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
@@ -31,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.mad_project2024.R
 import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 import com.example.mad_project2024.components.TopAppBar
@@ -55,15 +64,16 @@ fun DetailModeScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(32.dp),
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+
 
         ) {
             CategoryCard(title = stringResource(R.string.com_general), description = stringResource(R.string.com_description_general))
-            Spacer(Modifier.size(64.dp))
+            Spacer(Modifier.size(56.dp))
             CategoryCard(title = stringResource(R.string.com_communication), description = stringResource(R.string.com_description_communication))
-            Spacer(Modifier.size(64.dp))
+            Spacer(Modifier.size(56.dp))
             CategoryCard(title = stringResource(R.string.com_travel), description = stringResource(R.string.com_description_travel))
         }
 
@@ -78,7 +88,7 @@ fun DetailModeScreen() {
 @Composable
 fun CategoryCard(title: String, description: String, modifier:Modifier = Modifier) {
 
-    var showDetails by remember {
+    var showInformation by remember {
         mutableStateOf(true)
     }
 
@@ -88,11 +98,11 @@ fun CategoryCard(title: String, description: String, modifier:Modifier = Modifie
         ),
         modifier = Modifier
             .fillMaxWidth()
-
-
     ) {
 
-        Row(modifier = Modifier.fillMaxWidth().padding(16.dp),horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),horizontalArrangement = Arrangement.SpaceBetween) {
             Text(
                 text = title,
                 modifier = Modifier,
@@ -100,122 +110,83 @@ fun CategoryCard(title: String, description: String, modifier:Modifier = Modifie
             )
             Icon(modifier = Modifier
                 .clickable {
-                    showDetails = !showDetails
+                    showInformation = !showInformation
                 },
                 imageVector =
-                if (showDetails) Icons.Filled.KeyboardArrowDown
+                if (showInformation) Icons.Filled.KeyboardArrowDown
                 else Icons.Default.KeyboardArrowUp, contentDescription = "show more")
 
         }
 
-        //Spacer(Modifier.size(8.dp))
+        AnimatedVisibility(visible = showInformation) {
+            Text(
+                text = description,
+                modifier = Modifier.padding(start = 16.dp, top = 0.dp, bottom = 16.dp, end = 16.dp),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
 
-        Text(
-            text = description,
-            modifier = Modifier.padding(16.dp, top = 0.dp, bottom = 16.dp),
-            style = MaterialTheme.typography.bodyMedium
-        )
+        AnimatedVisibility(visible = !showInformation) {
+            InformationList(informations = listOf(
+                "test1",
+                "test3"
+            ))
+        }
+
     }
 
 }
 
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun TopAppBar1(title: String) {
-//
-//    CenterAlignedTopAppBar(
-//        colors = TopAppBarDefaults.topAppBarColors(
-//            containerColor = MaterialTheme.colorScheme.primaryContainer,
-//            titleContentColor = MaterialTheme.colorScheme.primary,
-//        ),
-//
-//        title = {
-//            Text(
-//                title,
-//                maxLines = 1,
-//                overflow = TextOverflow.Ellipsis,
-//            )
-//        },
-//        navigationIcon = {
-//            IconButton(onClick = { /* do something */ }) {
-//                Icon(
-//                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-//                    contentDescription = "Localized description"
-//                )
-//            }
-//        },
-//        actions = {
-//            IconButton(onClick = { /* do something */ }) {
-//                Icon(
-//                    imageVector = Icons.Filled.Menu,
-//                    contentDescription = "Localized description"
-//                )
-//            }
-//        },
-//
-//        )
-//
-//}
-//
-//
-//@Composable
-//fun BottomBar1(
-//
-//) {
-//    BottomAppBar(
-//        actions = {
-//            Row(modifier = Modifier
-//                .fillMaxWidth(),
-//                horizontalArrangement = Arrangement.SpaceBetween)
-//            {
-//                IconButton(onClick = { /* do something */ }) {
-//                    Icon(Icons.Filled.Home, contentDescription = "Localized description")
-//                }
-//                IconButton(onClick = { /* do something */ }) {
-//                    Icon(
-//                        Icons.Filled.Favorite,
-//                        contentDescription = "Localized description",
-//                    )
-//                }
-//                IconButton(onClick = { /* do something */ }) {
-//                    Icon(
-//                        Icons.Filled.AccountCircle,
-//                        contentDescription = "Localized description",
-//                    )
-//                }
-//            }
-//
-//
-//        }
-//    )
-//}
+@Composable
+fun InformationCard(information: String, subcategory: String) {
+    OutlinedCard(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        border = BorderStroke(1.dp, Color.Black),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+    ) {
+        Column {
+            Text(
+                text = information,
+                modifier = Modifier
+                    .padding(8.dp, bottom = 0.dp),
+                textAlign = TextAlign.Left,
+            )
+
+            Text(
+                text = subcategory,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                textAlign = TextAlign.End,
+                fontSize = 10.sp
+            )
+        }
+
+    }
+}
 
 @Composable
-fun IconCategory(
-    isFavorite: Boolean,
-    onFavoriteClick: () -> Unit = {}
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(10.dp),
-        contentAlignment = Alignment.TopEnd
-    ){
-        Icon(
-            modifier = Modifier.clickable {
-                onFavoriteClick()
-                Log.i("Category", "icon clicked")
-            },
-            tint = MaterialTheme.colorScheme.secondary,
-            imageVector =
-            if (isFavorite) {
-                Icons.Filled.KeyboardArrowDown
-            } else {
-                Icons.Default.FavoriteBorder
-            },
+fun InformationList(informations: List<String>) {
+    LazyColumn(
+        //modifier = Modifier.horizontalScroll(rememberScrollState())
+    ) {
+        items(informations) { informations ->
+            InformationCard(information = stringResource(id = R.string.general1), subcategory = "Public Holidays")
 
-            contentDescription = "Add to favorites")
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun InformationCardPreview() {
+    MovieAppMAD24Theme {
+        InformationCard(information = stringResource(id = R.string.general1), subcategory = "Public Holidays")
     }
 }
 
