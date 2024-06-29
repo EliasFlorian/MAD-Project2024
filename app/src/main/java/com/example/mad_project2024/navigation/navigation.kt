@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mad_project2024.screens.AuthScreen
 import com.example.mad_project2024.screens.HomeScreen
+import com.example.mad_project2024.screens.MainCategoryScreen
 
 @Composable
 fun Navigation() {
@@ -25,7 +26,12 @@ fun Navigation() {
         composable(
             route = Screen.HomeScreen.route
         ) {
-            HomeScreen()
+            HomeScreen(navController)
+        }
+        composable(
+            route = Screen.MainCategoryScreen.route
+        ) {
+            MainCategoryScreen()
         }
     }
 }

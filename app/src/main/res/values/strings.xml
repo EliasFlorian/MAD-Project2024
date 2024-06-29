@@ -8,7 +8,7 @@
     <string name="previous">Previous</string>
 
     <string name="travel_mode">Travel Mode</string>
-    <string name="general_mode">General Mode</string>
+    <string name="general_mode">Interaction Mode</string>
     <string name="description_travel_mode">nisl tincidunt eget nullamh tellus molestie nunc non blandit massa enim nec dui nunc mattis eni auctor eu augue ut lectus arcu bibendum at varius</string>
     <string name="description_general_mode">auctor eu augue ut lectus arcu bibendum at varius vel pharetra vel im facilisis gravida neque eget nullamh tellus molestie nunc non blandit massa</string>
 

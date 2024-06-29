@@ -1,6 +1,7 @@
 package com.example.mad_project2024.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -22,15 +23,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.mad_project2024.R
 import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 import com.example.mad_project2024.components.TopAppBar
 import com.example.mad_project2024.components.BottomBar
+import com.example.mad_project2024.navigation.Screen
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
 
     Scaffold (
 
@@ -45,15 +49,15 @@ fun HomeScreen() {
 
         Column(
             modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+                .fillMaxSize()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
 
 ) {
-    ModeCard(title = stringResource(R.string.travel_mode), description = stringResource(R.string.description_travel_mode))
+    ModeCard(title = stringResource(R.string.travel_mode), description = stringResource(R.string.description_travel_mode), navController)
     Spacer(Modifier.size(64.dp))
-    ModeCard(title = stringResource(R.string.general_mode), description = stringResource(R.string.description_general_mode))
+    ModeCard(title = stringResource(R.string.general_mode), description = stringResource(R.string.description_general_mode), navController)
 }
 
     }
@@ -65,7 +69,7 @@ fun HomeScreen() {
 
 
 @Composable
-fun ModeCard(title: String, description: String, modifier:Modifier = Modifier) {
+fun ModeCard(title: String, description: String, navController: NavController) {
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -73,6 +77,9 @@ fun ModeCard(title: String, description: String, modifier:Modifier = Modifier) {
         ),
         modifier = Modifier
             .fillMaxWidth()
+            .clickable {
+                navController.navigate(route = Screen.MainCategoryScreen.route)
+            }
     ) {
         Text(
             text = title,
@@ -102,6 +109,6 @@ fun ModeCard(title: String, description: String, modifier:Modifier = Modifier) {
 @Composable
 fun HomeScreenPreview() {
     MovieAppMAD24Theme {
-        HomeScreen()
+        HomeScreen(rememberNavController())
     }
 }
