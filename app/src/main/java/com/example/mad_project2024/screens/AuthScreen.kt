@@ -10,10 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.mad_project2024.navigation.Screen
 import com.example.mad_project2024.viewmodels.AuthViewModel
 
 @Composable
-fun AuthScreen(viewModel: AuthViewModel = viewModel()) {
+fun AuthScreen(navController: NavController, viewModel: AuthViewModel = viewModel()) {
     val authState by viewModel.authState.collectAsState()
 
     Column(
@@ -98,6 +100,10 @@ fun AuthScreen(viewModel: AuthViewModel = viewModel()) {
 
         TextButton(onClick = { viewModel.toggleAuthMode() }) {
             Text(text = if (authState.isRegister) "Already have an account? Login" else "Don't have an account? Register")
+        }
+
+        TextButton(onClick = { navController.navigate(route = Screen.HomeScreen.route) }) {
+            Text(text = "Skip")
         }
 
         authState.errorMessage?.let {

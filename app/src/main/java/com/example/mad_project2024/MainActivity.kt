@@ -3,6 +3,7 @@ package com.example.mad_project2024
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.example.mad_project2024.navigation.Navigation
 import com.example.mad_project2024.screens.AuthScreen
 import com.example.mad_project2024.screens.DetailModeScreen
 import com.example.mad_project2024.screens.StartScreen
@@ -13,7 +14,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MovieAppMAD24Theme {
-                DetailModeScreen()
+                Navigation()
             }
         }
     }
