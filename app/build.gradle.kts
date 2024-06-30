@@ -73,7 +73,8 @@ dependencies {
 
     // Coil for image loading
     implementation("io.coil-kt:coil-compose:2.6.0")
-   // implementation(libs.mediation.test.suite)
+    implementation(libs.androidx.navigation.compose)
+
 
     // Testing dependencies
     testImplementation(libs.junit)
