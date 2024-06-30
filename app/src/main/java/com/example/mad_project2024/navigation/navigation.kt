@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.example.mad_project2024.screens.AuthScreen
 import com.example.mad_project2024.screens.HomeScreen
 import com.example.mad_project2024.screens.MainCategoryScreen
+import com.example.mad_project2024.screens.SubCategoryScreen
 
 @Composable
 fun Navigation() {
@@ -32,6 +33,11 @@ fun Navigation() {
             route = Screen.MainCategoryScreen.route
         ) {
             MainCategoryScreen()
+        }
+        composable(
+            route = Screen.SubCategoryScreen.route
+        ) {
+            SubCategoryScreen()
         }
     }
 }
