@@ -6,4 +6,7 @@ sealed class Screen(val route: String) {
     object MainCategoryScreen: Screen(route = "main_category")
     object SubCategoryScreen: Screen(route = "sub_category")
     object AccountScreen: Screen(route = "account")
+    object SuggestionsScreen : Screen("suggestions")
+
+    object StartScreen : Screen("start")
 }

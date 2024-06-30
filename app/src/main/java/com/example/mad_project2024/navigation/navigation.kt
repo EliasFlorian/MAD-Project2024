@@ -1,8 +1,7 @@
 package com.example.mad_project2024.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.Navigation
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +11,7 @@ import com.example.mad_project2024.screens.AuthScreen
 import com.example.mad_project2024.screens.HomeScreen
 import com.example.mad_project2024.screens.MainCategoryScreen
 import com.example.mad_project2024.screens.SubCategoryScreen
+import com.example.mad_project2024.screens.SuggestionsScreen
 
 @Composable
 fun Navigation() {
@@ -32,12 +32,21 @@ fun Navigation() {
         composable(
             route = Screen.MainCategoryScreen.route
         ) {
-            MainCategoryScreen()
+            MainCategoryScreen(navController)
         }
         composable(
             route = Screen.SubCategoryScreen.route
         ) {
             SubCategoryScreen()
         }
+        composable(
+            route = "${Screen.SuggestionsScreen.route}/{subcategory}",
+            arguments = listOf(navArgument("subcategory") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val subcategory = backStackEntry.arguments?.getString("subcategory") ?: ""
+            SuggestionsScreen(navController = navController, viewModel = hiltViewModel(), subcategory = subcategory)
+        }
+
+
     }
 }
