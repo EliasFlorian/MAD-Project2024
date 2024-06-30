@@ -1,5 +1,6 @@
 package com.example.mad_project2024.api
 
+import com.example.mad_project2024.models.Country
 import com.example.mad_project2024.models.MessageResponse
 import com.example.mad_project2024.models.auth.Token
 import com.example.mad_project2024.models.user.CreateUser
@@ -56,4 +57,7 @@ interface ApiService {
 
     @DELETE("/private/usr/{nickName}")
     fun deleteUser(@Path("nickName") nickName: String, @Header("Authorization") token: String): Call<MessageResponse>
+
+    @GET("public/country/all")
+    fun getCountries(): Call<List<Country>>
 }

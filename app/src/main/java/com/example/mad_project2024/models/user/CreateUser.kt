@@ -4,5 +4,6 @@ data class CreateUser(
     val nickName: String,
     val email: String,
     val displayedName: String,
-    val password: String
+    val password: String,
+    val homeCountry: String
 )
