@@ -136,8 +136,11 @@ fun AuthScreen(navController: NavController, viewModel: AuthViewModel = hiltView
             Text(text = if (authState.isRegister) "Already have an account? Login" else "Don't have an account? Register")
         }
 
-        TextButton(onClick = { navController.navigate(route = Screen.HomeScreen.route) }) {
-            Text(text = "Skip")
+        TextButton(onClick = {
+            viewModel.guestLogin()
+            navController.navigate(route = Screen.HomeScreen.route)
+        }) {
+            Text(text = "Continue as Guest")
         }
 
         authState.errorMessage?.let {

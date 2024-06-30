@@ -1,6 +1,7 @@
 package com.example.mad_project2024.viewmodels
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mad_project2024.models.Country
@@ -97,6 +98,7 @@ class AuthViewModel @Inject constructor(
                 val token = result.getOrNull()
                 if (token != null) {
                     tokenManager.saveToken(token)
+                    Log.d("AuthViewModel", "Token saved: ${token.access_token}")
                     _authState.value = _authState.value.copy(errorMessage = "Logged In successfully!")
                 }
             } else {
@@ -126,4 +128,23 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
+
+    fun guestLogin() {
+        viewModelScope.launch {
+            val result = repository.guestAccess()
+            if (result.isSuccess) {
+                val token = result.getOrNull()
+                if (token != null) {
+                    tokenManager.saveToken(token)
+                    Log.d("AuthViewModel", "Token saved: ${token.access_token}")
+                    _authState.value =
+                        _authState.value.copy(errorMessage = "Guest access successful!")
+                }
+            } else {
+                _authState.value =
+                    _authState.value.copy(errorMessage = result.exceptionOrNull()?.message)
+            }
+        }
+    }
+
 }
