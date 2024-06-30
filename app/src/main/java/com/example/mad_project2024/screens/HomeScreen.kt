@@ -39,10 +39,10 @@ fun HomeScreen(navController: NavController) {
     Scaffold (
 
         topBar = {
-            TopAppBar(title = stringResource(id = R.string.app_name))
+            TopAppBar(title = stringResource(id = R.string.app_name), navController)
         },
         bottomBar = {
-            BottomBar()
+            BottomBar(navController)
         }
 
     ) {innerPadding ->
@@ -78,7 +78,12 @@ fun ModeCard(title: String, description: String, navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                navController.navigate(route = Screen.MainCategoryScreen.route)
+                if (title == "Travel Mode") {
+                    navController.navigate(route = Screen.MainCategoryScreen.route)
+                }
+                if (title == "Interaction Mode") {
+                    navController.navigate(route = Screen.MainCategoryScreen.route)
+                }
             }
     ) {
         Text(

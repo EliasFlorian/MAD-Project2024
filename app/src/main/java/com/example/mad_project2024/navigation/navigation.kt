@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.mad_project2024.screens.AccountScreen
 import com.example.mad_project2024.screens.AuthScreen
 import com.example.mad_project2024.screens.HomeScreen
 import com.example.mad_project2024.screens.MainCategoryScreen
@@ -32,12 +33,17 @@ fun Navigation() {
         composable(
             route = Screen.MainCategoryScreen.route
         ) {
-            MainCategoryScreen()
+            MainCategoryScreen(navController)
         }
         composable(
             route = Screen.SubCategoryScreen.route
         ) {
-            SubCategoryScreen()
+            SubCategoryScreen(navController)
+        }
+        composable(
+            route = Screen.AccountScreen.route
+        ) {
+            AccountScreen(navController)
         }
     }
 }

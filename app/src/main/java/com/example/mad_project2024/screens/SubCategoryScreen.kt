@@ -26,6 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.mad_project2024.R
 import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 import com.example.mad_project2024.components.TopAppBar
@@ -35,15 +37,15 @@ import com.example.mad_project2024.navigation.Screen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SubCategoryScreen() {
+fun SubCategoryScreen(navController: NavController) {
 
     Scaffold (
 
         topBar = {
-            TopAppBar(title = stringResource(id = R.string.travel_mode))
+            TopAppBar(title = stringResource(id = R.string.travel_mode), navController)
         },
         bottomBar = {
-            BottomBar()
+            BottomBar(navController)
         }
 
     ) {paddingValues ->
@@ -182,6 +184,6 @@ fun InformationCard(content: String) {
 @Composable
 fun SubCategoryScreenPreview() {
     MovieAppMAD24Theme {
-        SubCategoryScreen()
+        SubCategoryScreen(rememberNavController())
     }
 }
