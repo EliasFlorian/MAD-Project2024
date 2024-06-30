@@ -13,9 +13,10 @@ import androidx.navigation.NavController
 import com.example.mad_project2024.navigation.Screen
 import com.example.mad_project2024.models.Country
 import com.example.mad_project2024.viewmodels.AuthViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun AuthScreen(navController: NavController, viewModel: AuthViewModel = viewModel()) {
+fun AuthScreen(navController: NavController, viewModel: AuthViewModel = hiltViewModel()) {
     val authState by viewModel.authState.collectAsState()
     val countries by viewModel.countries.collectAsState(emptyList())
     var isDropdownExpanded by remember { mutableStateOf(false) }
