@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mad_project2024.R
@@ -34,6 +35,8 @@ import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 import com.example.mad_project2024.components.TopAppBar
 import com.example.mad_project2024.components.BottomBar
 import com.example.mad_project2024.navigation.Screen
+
+
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -59,7 +62,7 @@ fun HomeScreen(navController: NavController) {
             verticalArrangement = Arrangement.Center
 
 ) {
-    ModeCard(title = stringResource(R.string.travel_mode), description = stringResource(R.string.description_travel_mode), navController)
+    TravelModeCard(title = stringResource(R.string.travel_mode), description = stringResource(R.string.description_travel_mode), navController)
     Spacer(Modifier.size(64.dp))
     ModeCard(title = stringResource(R.string.general_mode), description = stringResource(R.string.description_general_mode), navController)
 }
@@ -109,8 +112,11 @@ fun ModeCard(title: String, description: String, navController: NavController) {
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TravelModeCard(title: String, description: String, navController: NavController) {
+
+
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -142,6 +148,37 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
             modifier = Modifier.padding(start = 16.dp, top = 0.dp, bottom = 16.dp, end = 16.dp),
             style = MaterialTheme.typography.bodyLarge
         )
+        Text(
+            text = "Pick your Dates",
+            Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            textAlign = TextAlign.Center
+
+        )
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+            Button(
+                onClick = {  },
+
+                modifier = Modifier
+                    .width(150.dp)
+                    .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
+            ) {
+                Text(text = "Start", fontSize = 16.sp)
+            }
+            Button(
+                onClick = {  },
+
+                modifier = Modifier
+                    .width(150.dp)
+                    .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
+            ) {
+                Text(text = "End", fontSize = 16.sp)
+            }
+        }
+
+
     }
 
 }

@@ -93,42 +93,6 @@ dependencies {
 
     implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc")
 
-//    // CORE
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:core:<version>")
-//
-//    // INFO
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:info:<version>")
-//
-//    // COLOR
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:color:<version>")
-//
-//    // CALENDAR
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:calendar:<version>")
-//
-//    // CLOCK
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:clock:<version>")
-//
-//    // DATE TIME
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:date_time:<version>")
-//
-//    // DURATION
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:duration:<version>")
-//
-//    // OPTION
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:option:<version>")
-//
-//    // LIST
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:list:<version>")
-//
-//    // INPUT
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:input:<version>")
-//
-//    // EMOJI
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:emoji:<version>")
-//
-//    // STATE
-//    implementation ("com.maxkeppeler.sheets-compose-dialogs:state:<version>")
-
 }
 
 // Allow references to generated code
