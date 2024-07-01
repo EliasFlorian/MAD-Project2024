@@ -15,9 +15,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -105,7 +109,42 @@ fun ModeCard(title: String, description: String, navController: NavController) {
 
 }
 
+@Composable
+fun TravelModeCard(title: String, description: String, navController: NavController) {
 
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                if (title == "Travel Mode") {
+                    navController.navigate(route = Screen.MainCategoryScreen.route)
+                }
+                if (title == "Interaction Mode") {
+                    navController.navigate(route = Screen.MainCategoryScreen.route)
+                }
+            }
+    ) {
+        Text(
+            text = title,
+            modifier = Modifier
+                .padding(16.dp),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleLarge
+        )
+
+        Spacer(Modifier.size(8.dp))
+
+        Text(
+            text = description,
+            modifier = Modifier.padding(start = 16.dp, top = 0.dp, bottom = 16.dp, end = 16.dp),
+            style = MaterialTheme.typography.bodyLarge
+        )
+    }
+
+}
 
 
 
@@ -117,3 +156,4 @@ fun HomeScreenPreview() {
         HomeScreen(rememberNavController())
     }
 }
+

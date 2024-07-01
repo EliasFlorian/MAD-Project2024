@@ -11,6 +11,7 @@ import com.example.mad_project2024.screens.AccountScreen
 import com.example.mad_project2024.screens.AuthScreen
 import com.example.mad_project2024.screens.HomeScreen
 import com.example.mad_project2024.screens.MainCategoryScreen
+import com.example.mad_project2024.screens.StartScreen
 import com.example.mad_project2024.screens.SubCategoryScreen
 import com.example.mad_project2024.screens.SuggestionsScreen
 
@@ -19,7 +20,13 @@ fun Navigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController,
-        startDestination = Screen.AuthScreen.route) {
+        startDestination = Screen.StartScreen.route) {
+
+        composable(
+            route = Screen.StartScreen.route
+        ) {
+            StartScreen(navController)
+        }
         composable(
             route = Screen.AuthScreen.route
         ) {

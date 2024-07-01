@@ -24,12 +24,13 @@ import com.example.mad_project2024.components.TopAppBar
 import com.example.mad_project2024.components.BottomBar
 import com.example.mad_project2024.navigation.Screen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainCategoryScreen(navController: NavController) {
     Scaffold(
-        topBar = { TopAppBar(title = stringResource(id = R.string.travel_mode)) },
-        bottomBar = { BottomBar() }
+        topBar = { TopAppBar(title = stringResource(id = R.string.travel_mode), navController) },
+        bottomBar = { BottomBar(navController) }
     ) { innerPadding ->
         MainView(navController)
     }
