@@ -123,6 +123,7 @@ fun AuthScreen(navController: NavController, viewModel: AuthViewModel = hiltView
                     viewModel.register()
                 } else {
                     viewModel.login()
+                    navController.navigate(route = Screen.HomeScreen.route)
                 }
             },
             modifier = Modifier.fillMaxWidth()

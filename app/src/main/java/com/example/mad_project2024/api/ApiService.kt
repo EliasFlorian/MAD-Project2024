@@ -2,6 +2,7 @@ package com.example.mad_project2024.api
 
 import com.example.mad_project2024.models.Country
 import com.example.mad_project2024.models.MessageResponse
+import com.example.mad_project2024.models.Suggestion
 import com.example.mad_project2024.models.auth.Token
 import com.example.mad_project2024.models.user.CreateUser
 import com.example.mad_project2024.models.user.ListUser
@@ -60,4 +61,24 @@ interface ApiService {
 
     @GET("public/country/all")
     fun getCountries(): Call<List<Country>>
+
+    @GET("public/suggestions")
+    fun getSuggestions(): Call<List<Suggestion>>
+
+    @POST("private/suggestions")
+    @FormUrlEncoded
+    fun submitSuggestion(
+        @Field("selectedCountry") country: String,
+        @Field("selectedSubCategory") subCategory: String,
+        @Field("suggestedContent") content: String
+    ): Call<Void>
+
+    @PUT("private/suggestions/{id}/approve")
+    fun approveSuggestion(@Path("id") id: String): Call<Void>
+
+    @PUT("private/suggestions/{id}/decline")
+    fun declineSuggestion(@Path("id") id: String): Call<Void>
+
+    @DELETE("private/suggestions/{id}")
+    fun deleteSuggestion(@Path("id") id: String): Call<Void>
 }
