@@ -1,4 +1,4 @@
-package com.example.mad_project2024.models.auth
+package com.example.mad_project2024.models
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -41,7 +41,7 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
     fun getToken(): Token? {
         val tokenString = prefs.getString(TOKEN_KEY, null)
         return tokenString?.let{
-            gson.fromJson(it,Token::class.java)
+            gson.fromJson(it, Token::class.java)
         }
     }
         /*

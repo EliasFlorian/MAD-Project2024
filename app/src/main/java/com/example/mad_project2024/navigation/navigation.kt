@@ -12,6 +12,7 @@ import com.example.mad_project2024.screens.HomeScreen
 import com.example.mad_project2024.screens.MainCategoryScreen
 import com.example.mad_project2024.screens.SubCategoryScreen
 import com.example.mad_project2024.screens.SuggestionsScreen
+import com.example.mad_project2024.viewmodels.MainCategoryViewModel
 
 @Composable
 fun Navigation() {
@@ -32,7 +33,8 @@ fun Navigation() {
         composable(
             route = Screen.MainCategoryScreen.route
         ) {
-            MainCategoryScreen(navController)
+            val viewModel: MainCategoryViewModel = hiltViewModel()
+            MainCategoryScreen(navController, viewModel, countryCode = "AFG") // Replace with actual country code
         }
         composable(
             route = Screen.SubCategoryScreen.route

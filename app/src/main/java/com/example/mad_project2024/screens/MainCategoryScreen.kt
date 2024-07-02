@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -22,21 +23,33 @@ import com.example.mad_project2024.R
 import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 import com.example.mad_project2024.components.TopAppBar
 import com.example.mad_project2024.components.BottomBar
+import com.example.mad_project2024.models.SubCategory
 import com.example.mad_project2024.navigation.Screen
+import com.example.mad_project2024.viewmodels.MainCategoryViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mad_project2024.viewmodels.ModeViewModel
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainCategoryScreen(navController: NavController) {
+fun MainCategoryScreen(navController: NavController, modeViewModel: ModeViewModel = hiltViewModel(), viewModel: MainCategoryViewModel = hiltViewModel()) {
+    val mode by modeViewModel.mode.collectAsState()
+    val subCategories by viewModel.subCategories.collectAsState()
+
+    LaunchedEffect(mode) {
+        mode?.let { viewModel.fetchSubCategories(it) }
+    }
+
     Scaffold(
         topBar = { TopAppBar(title = stringResource(id = R.string.travel_mode)) },
         bottomBar = { BottomBar() }
     ) { innerPadding ->
-        MainView(navController)
+        MainView(navController, subCategories)
     }
 }
 
 @Composable
-fun MainView(navController: NavController) {
+fun MainView(navController: NavController, subCategories: List<SubCategory>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -44,24 +57,16 @@ fun MainView(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        item {
-            CategoryCard(navController, title = stringResource(R.string.com_general), description = stringResource(R.string.com_description_general))
+        items(subCategories) { category ->
+            CategoryCard(navController, category)
             Spacer(Modifier.size(56.dp))
-        }
-        item {
-            CategoryCard(navController, title = stringResource(R.string.com_communication), description = stringResource(R.string.com_description_communication))
-            Spacer(Modifier.size(56.dp))
-        }
-        item {
-            CategoryCard(navController, title = stringResource(R.string.com_travel), description = stringResource(R.string.com_description_travel))
         }
     }
 }
 
 @Composable
-fun CategoryCard(navController: NavController, title: String, description: String) {
+fun CategoryCard(navController: NavController, category: SubCategory) {
     var showInformation by remember { mutableStateOf(true) }
-    var expanded by remember { mutableStateOf(false) }
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
@@ -73,7 +78,7 @@ fun CategoryCard(navController: NavController, title: String, description: Strin
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = title,
+                    text = category.title,
                     style = MaterialTheme.typography.titleMedium
                 )
                 Icon(
@@ -84,25 +89,20 @@ fun CategoryCard(navController: NavController, title: String, description: Strin
             }
             AnimatedVisibility(visible = showInformation) {
                 Text(
-                    text = description,
+                    text = category.description ?: "No description available",
                     modifier = Modifier.padding(start = 16.dp, top = 0.dp, bottom = 16.dp, end = 16.dp),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
             AnimatedVisibility(visible = !showInformation) {
                 Column {
-                    val subCategories = when (title) {
-                        stringResource(id = R.string.com_general) -> listOf("Public Holidays", "Healthcare-System", "Restrictions", "Fun facts", "Dos and Don’ts")
-                        stringResource(id = R.string.com_communication) -> listOf("Local greetings", "Etiquette", "Expectations", "Popular phrases", "Gestures and facial expressions")
-                        stringResource(id = R.string.com_travel) -> listOf("Public Transport", "Payment norms", "Traveling by car", "Traveling on foot", "Risks and dangers", "Shopping", "Gastronomy")
-                        else -> emptyList()
-                    }
-                    subCategories.forEach { subCategory ->
-                        SubCategoryCard(
-                            navController = navController,
-                            category = title,
-                            subcategory = subCategory,
-                            description = "Description for $subCategory"
+                    category.data?.forEach { data ->
+                        SubCategoryCard(navController, category.title, data.content ?: "No content available", data.content ?: "No description available")
+                    } ?: run {
+                        Text(
+                            text = "No subcategories available",
+                            modifier = Modifier.padding(16.dp),
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 }
@@ -137,6 +137,17 @@ fun SubCategoryCard(navController: NavController, category: String, subcategory:
     }
 }
 
+/*
+@Preview(showBackground = true)
+@Composable
+fun MainCategoryScreenPreview() {
+    val navController = rememberNavController()
+    MovieAppMAD24Theme {
+        MainCategoryScreen(navController = navController, viewModel = MainCategoryViewModel(), countryCode = "US")
+    }
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun MainCategoryScreenPreview() {
@@ -145,3 +156,4 @@ fun MainCategoryScreenPreview() {
         MainCategoryScreen(navController = navController)
     }
 }
+*/
