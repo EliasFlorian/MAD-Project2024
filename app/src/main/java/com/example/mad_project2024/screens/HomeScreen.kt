@@ -20,6 +20,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+//import androidx.compose.ui.input.key.Key.Companion.Calendar
+import java.util.Calendar;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.os.Bundle;
+import android.widget.Toast
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -35,8 +45,13 @@ import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 import com.example.mad_project2024.components.TopAppBar
 import com.example.mad_project2024.components.BottomBar
 import com.example.mad_project2024.navigation.Screen
-
-
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Locale
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -112,11 +127,16 @@ fun ModeCard(title: String, description: String, navController: NavController) {
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TravelModeCard(title: String, description: String, navController: NavController) {
 
+    val getDatePicker = MaterialDatePicker.Builder.datePicker()
+        .setTitleText("Select date")
+        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+        .setPositiveButtonText("Submit")
+        .build()
 
+    val dateDialogState = rememberMaterialDialogState()
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -150,7 +170,9 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
         )
         Text(
             text = "Pick your Dates",
-            Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
             textAlign = TextAlign.Center
 
         )
@@ -159,11 +181,11 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
                 horizontalArrangement = Arrangement.Center
             ) {
             Button(
-                onClick = {  },
-
+                onClick = { dateDialogState.show() },
                 modifier = Modifier
                     .width(150.dp)
                     .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
+
             ) {
                 Text(text = "Start", fontSize = 16.sp)
             }
@@ -176,13 +198,27 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
             ) {
                 Text(text = "End", fontSize = 16.sp)
             }
+
+            //datepicker
+            MaterialDialog(
+                dialogState = dateDialogState,
+                buttons = {
+                    positiveButton(text = "Ok")
+                    negativeButton(text = "Cancel")
+                }
+            ) {
+                datepicker(
+                    initialDate = LocalDate.now(),
+                    title = "pick a date"
+                )
+            }
         }
+
 
 
     }
 
 }
-
 
 
 
