@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.widget.Toast
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.fragment.app.DialogFragment;
 
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -47,11 +48,13 @@ import com.example.mad_project2024.components.BottomBar
 import com.example.mad_project2024.navigation.Screen
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Locale
+import kotlin.math.round
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -190,7 +193,7 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
                 Text(text = "Start", fontSize = 16.sp)
             }
             Button(
-                onClick = {  },
+                onClick = { dateDialogState.show() },
 
                 modifier = Modifier
                     .width(150.dp)
@@ -202,14 +205,25 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
             //datepicker
             MaterialDialog(
                 dialogState = dateDialogState,
+                shape = RoundedCornerShape(10.dp),
                 buttons = {
                     positiveButton(text = "Ok")
-                    negativeButton(text = "Cancel")
+                    negativeButton(
+                        text = "Cancel")
+
                 }
+                //backgroundColor = MaterialTheme.colorScheme.primary
             ) {
                 datepicker(
                     initialDate = LocalDate.now(),
-                    title = "pick a date"
+                    title = "pick a date",
+                    colors = DatePickerDefaults.colors(
+                        headerBackgroundColor = MaterialTheme.colorScheme.primary,
+                        //dateInactiveTextColor = MaterialTheme.colorScheme.primary,
+                        dateActiveBackgroundColor = MaterialTheme.colorScheme.primary,
+
+                    )
+
                 )
             }
         }
