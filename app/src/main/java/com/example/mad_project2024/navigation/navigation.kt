@@ -33,17 +33,20 @@ fun Navigation() {
             val viewModel: ModeViewModel = hiltViewModel()
             HomeScreen(navController, viewModel)
         }
-        composable(route = Screen.MainCategoryScreen.route + "/{countryCode}") { backStackEntry ->
+        composable(
+            route = Screen.MainCategoryScreen.route + "/{countryCode}"
+        ) { backStackEntry ->
             val countryCode = backStackEntry.arguments?.getString("countryCode") ?: ""
             val viewModel: InformationViewModel = hiltViewModel()
             MainCategoryScreen(navController = navController, viewModel = viewModel, countryCode = countryCode)
         }
+        /*
         composable(route = Screen.SubCategoryScreen.route + "/{countryCode}") { backStackEntry ->
             val countryCode = backStackEntry.arguments?.getString("countryCode") ?: ""
             val viewModel: InformationViewModel = hiltViewModel()
             SubCategoryScreen(navController = navController, viewModel = viewModel, countryCode = countryCode)
         }
-
+        */
         composable(
             route = Screen.SuggestionsScreen.route + "/{subcategory}"
         ) { backStackEntry ->

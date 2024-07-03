@@ -85,7 +85,7 @@ interface ApiService {
     @DELETE("private/suggestions/{id}")
     fun deleteSuggestion(@Path("id") id: String): Call<Void>
     @GET("public/information/{countryCode}")
-    fun getInformation(@Path("countryCode") countryCode: String): Call<List<InformationResponse>>
+    fun getInformation(@Path("countryCode") countryCode: String): Call<InformationResponse>
 
     @GET("public/information/getSubCategories/{country_code}")
     suspend fun getSubCategories(@Path("country_code") countryCode: String): List<SubCategory>

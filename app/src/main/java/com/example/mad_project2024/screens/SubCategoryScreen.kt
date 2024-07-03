@@ -157,7 +157,7 @@ fun SubCategoryCard(subCategory: SubCategory) {
         }
     }
 }
-
+/*
 @Composable
 fun ContentCard(contentData: ContentData) {
     ElevatedCard(
@@ -172,3 +172,4 @@ fun ContentCard(contentData: ContentData) {
         }
     }
 }
+*/
