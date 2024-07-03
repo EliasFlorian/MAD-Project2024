@@ -29,6 +29,8 @@ import android.widget.Toast
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.setValue
 import androidx.fragment.app.DialogFragment;
 
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -45,6 +47,7 @@ import com.example.mad_project2024.R
 import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 import com.example.mad_project2024.components.TopAppBar
 import com.example.mad_project2024.components.BottomBar
+import com.example.mad_project2024.models.Country
 import com.example.mad_project2024.navigation.Screen
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.vanpra.composematerialdialogs.MaterialDialog
@@ -57,9 +60,16 @@ import java.util.Locale
 import kotlin.math.round
 
 
+import com.example.mad_project2024.viewmodels.AuthViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: AuthViewModel = hiltViewModel()) {
+    val authState by viewModel.authState.collectAsState()
+    val countries by viewModel.countries.collectAsState(emptyList())
+    var isDropdownExpanded by remember { mutableStateOf(false) }
+    var selectedCountry by remember { mutableStateOf<Country?>(null) }
 
     Scaffold (
 
@@ -79,11 +89,41 @@ fun HomeScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
 
-) {
-    TravelModeCard(title = stringResource(R.string.travel_mode), description = stringResource(R.string.description_travel_mode), navController)
-    Spacer(Modifier.size(64.dp))
-    ModeCard(title = stringResource(R.string.general_mode), description = stringResource(R.string.description_general_mode), navController)
+        ) {
+            TravelModeCard(title = stringResource(R.string.travel_mode), description = stringResource(R.string.description_travel_mode), navController)
+            Spacer(Modifier.size(64.dp))
+            ModeCard(title = stringResource(R.string.general_mode), description = stringResource(R.string.description_general_mode), navController)
+            Spacer(Modifier.size(64.dp))
+
+            Box(modifier = Modifier.fillMaxWidth()) {
+                OutlinedTextField(
+                    value = selectedCountry?.country_name ?: "Select Country",
+                    onValueChange = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { isDropdownExpanded = true },
+                    label = { Text("Country") },
+                    readOnly = true
+                )
+                DropdownMenu(
+                    expanded = isDropdownExpanded,
+                    onDismissRequest = { isDropdownExpanded = false },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    countries.forEach { country ->
+                        DropdownMenuItem(
+                            text = { Text(text = country.country_name) },
+                            onClick = {
+                                selectedCountry = country
+                                viewModel.onCountryChange(selectedCountry!!.code)
+                                isDropdownExpanded = false
+                            }
+                        )
+                    }
+                }
+            }
 }
+
 
     }
 
@@ -240,7 +280,7 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
 @Composable
 fun HomeScreenPreview() {
     MovieAppMAD24Theme {
-        HomeScreen(rememberNavController())
+        HomeScreen(rememberNavController(), viewModel = hiltViewModel())
     }
 }
 
