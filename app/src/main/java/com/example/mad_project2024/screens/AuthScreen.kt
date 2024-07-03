@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -14,6 +15,7 @@ import com.example.mad_project2024.navigation.Screen
 import com.example.mad_project2024.models.Country
 import com.example.mad_project2024.viewmodels.AuthViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun AuthScreen(navController: NavController, viewModel: AuthViewModel = hiltViewModel()) {

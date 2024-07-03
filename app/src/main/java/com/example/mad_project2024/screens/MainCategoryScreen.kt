@@ -28,6 +28,7 @@ import com.example.mad_project2024.navigation.Screen
 import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 import com.example.mad_project2024.viewmodels.InformationViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainCategoryScreen(
@@ -42,8 +43,13 @@ fun MainCategoryScreen(
     }
 
     Scaffold(
-        topBar = { TopAppBar(title = "Categories") },
-        bottomBar = { BottomBar() }
+
+        topBar = { TopAppBar(title = stringResource(id = R.string.travel_mode), navController) },
+        bottomBar = { BottomBar(navController) }
+
+   //     topBar = { TopAppBar(title = "Categories") },
+   //     bottomBar = { BottomBar() }
+
     ) { innerPadding ->
         MainView(navController, information)
     }

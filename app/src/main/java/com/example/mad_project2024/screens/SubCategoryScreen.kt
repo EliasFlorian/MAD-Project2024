@@ -30,6 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+
+import androidx.navigation.compose.rememberNavController
+
 import com.example.mad_project2024.R
 import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 import com.example.mad_project2024.components.TopAppBar
@@ -43,8 +46,12 @@ import com.example.mad_project2024.viewmodels.InformationViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SubCategoryScreen(navController: NavController, viewModel: InformationViewModel, countryCode: String) {
-    val information by viewModel.information.collectAsState()
+
+fun SubCategoryScreen(navController: NavController) {
+
+//fun SubCategoryScreen(navController: NavController, viewModel: InformationViewModel, countryCode: String) {
+ //   val information by viewModel.information.collectAsState()
+
 
     LaunchedEffect(countryCode) {
         viewModel.fetchInformation(countryCode)
@@ -52,20 +59,42 @@ fun SubCategoryScreen(navController: NavController, viewModel: InformationViewMo
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Information") })
+
+            TopAppBar(title = stringResource(id = R.string.travel_mode), navController)
         },
-        content = {
-            information?.let { info ->
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp)
-                ) {
-                    items(info.categories) { category ->
-                        CategoryCard(category, navController)
-                    }
-                }
-            }
+        bottomBar = {
+            BottomBar(navController)
+        }
+
+    ) {paddingValues ->
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+
+
+            ) {
+            ContentCard(title = "Public Holidays")
+
+
+//            TopAppBar(title = { Text("Information") })
+  //      },
+    //    content = {
+      //      information?.let { info ->
+        //        LazyColumn(
+          //          modifier = Modifier
+            //            .fillMaxSize()
+              //          .padding(16.dp)
+                //) {
+                  //  items(info.categories) { category ->
+                    //    CategoryCard(category, navController)
+  //                  }
+    //            }
+      //      }
+
         }
     )
 }
@@ -159,7 +188,12 @@ fun SubCategoryCard(subCategory: SubCategory) {
 }
 
 @Composable
-fun ContentCard(contentData: ContentData) {
+
+fun SubCategoryScreenPreview() {
+    MovieAppMAD24Theme {
+        SubCategoryScreen(rememberNavController())
+
+/*fun ContentCard(contentData: ContentData) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -169,6 +203,6 @@ fun ContentCard(contentData: ContentData) {
             Text(text = "Content: ${contentData.content}")
             Text(text = "Rating: ${contentData.rating}")
             Text(text = "Rate Count: ${contentData.rateCount}")
-        }
+        }*/
     }
 }

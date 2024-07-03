@@ -8,9 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.mad_project2024.screens.AccountScreen
 import com.example.mad_project2024.screens.AuthScreen
 import com.example.mad_project2024.screens.HomeScreen
 import com.example.mad_project2024.screens.MainCategoryScreen
+import com.example.mad_project2024.screens.StartScreen
 import com.example.mad_project2024.screens.SubCategoryScreen
 import com.example.mad_project2024.screens.SuggestionsScreen
 import com.example.mad_project2024.viewmodels.AuthViewModel
@@ -23,7 +25,13 @@ fun Navigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController,
-        startDestination = Screen.AuthScreen.route) {
+        startDestination = Screen.StartScreen.route) {
+
+        composable(
+            route = Screen.StartScreen.route
+        ) {
+            StartScreen(navController)
+        }
         composable(
             route = Screen.AuthScreen.route
         ) {
@@ -38,10 +46,21 @@ fun Navigation() {
             val viewModel: InformationViewModel = hiltViewModel()
             MainCategoryScreen(navController = navController, viewModel = viewModel, countryCode = countryCode)
         }
-        composable(route = Screen.SubCategoryScreen.route + "/{countryCode}") { backStackEntry ->
-            val countryCode = backStackEntry.arguments?.getString("countryCode") ?: ""
-            val viewModel: InformationViewModel = hiltViewModel()
-            SubCategoryScreen(navController = navController, viewModel = viewModel, countryCode = countryCode)
+        composable(
+            route = Screen.SubCategoryScreen.route
+        ) {
+            SubCategoryScreen(navController)
+        }
+        composable(
+            route = Screen.AccountScreen.route
+        ) {
+            AccountScreen(navController)
+
+      //  composable(route = Screen.SubCategoryScreen.route + "/{countryCode}") { backStackEntry ->
+    //        val countryCode = backStackEntry.arguments?.getString("countryCode") ?: ""
+  //          val viewModel: InformationViewModel = hiltViewModel()
+//            SubCategoryScreen(navController = navController, viewModel = viewModel, countryCode = countryCode)
+
         }
 
         composable(
