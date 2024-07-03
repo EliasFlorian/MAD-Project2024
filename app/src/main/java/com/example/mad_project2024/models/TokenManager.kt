@@ -2,6 +2,7 @@ package com.example.mad_project2024.models
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,6 +31,7 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
     fun saveToken(token: Token) {
         val tokenString = gson.toJson(token)
         prefs.edit().putString(TOKEN_KEY, tokenString).apply()
+        Log.d("TokenManager", "Token saved: $tokenString")
             /*.apply {
             putString(ACCESS_TOKEN, token.access_token)
             putString(REFRESH_TOKEN, token.refresh_token)
@@ -40,6 +42,7 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
 
     fun getToken(): Token? {
         val tokenString = prefs.getString(TOKEN_KEY, null)
+        Log.d("TokenManager", "Retrieved token string: $tokenString")
         return tokenString?.let{
             gson.fromJson(it, Token::class.java)
         }
@@ -58,6 +61,7 @@ class TokenManager @Inject constructor(@ApplicationContext context: Context) {
 
     fun clearToken() {
         prefs.edit().remove(TOKEN_KEY).apply()
+        Log.d("TokenManager", "Token cleared")
     }
 
 }

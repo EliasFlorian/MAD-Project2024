@@ -26,6 +26,7 @@ import com.example.mad_project2024.models.SubCategory
 import com.example.mad_project2024.models.ContentData
 import com.example.mad_project2024.navigation.Screen
 import com.example.mad_project2024.viewmodels.InformationViewModel
+import com.example.mad_project2024.viewmodels.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -33,9 +34,11 @@ import com.example.mad_project2024.viewmodels.InformationViewModel
 fun MainCategoryScreen(
     navController: NavController,
     viewModel: InformationViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
     countryCode: String
 ) {
-    val mainCategories by viewModel.information.collectAsState()
+    val informationState by viewModel.informationState.collectAsState()
+    val authState by authViewModel.authState.collectAsState()
     var selectedSubCategory by remember { mutableStateOf<SubCategory?>(null) }
 
     LaunchedEffect(countryCode) {
@@ -52,7 +55,7 @@ fun MainCategoryScreen(
                     )
                 },
                 actions = {
-                    if (selectedSubCategory != null) {
+                    if (selectedSubCategory != null && informationState.role != "GUEST") {
                         IconButton(onClick = { /* navigate to add suggestion screen */ }) {
                             Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
                         }
@@ -62,13 +65,17 @@ fun MainCategoryScreen(
         },
         bottomBar = { BottomBar() }
     ) { innerPadding ->
-        mainCategories?.let {
+        informationState.information?.let {
             if (selectedSubCategory == null) {
                 MainView(navController, it, countryCode, onSubCategoryClick = { subCategory ->
                     selectedSubCategory = subCategory
                 })
             } else {
-                SubCategoryContentView(subCategory = selectedSubCategory!!)
+                informationState.role?.let { it1 ->
+                    SubCategoryContentView(subCategory = selectedSubCategory!!,
+                        it1
+                    )
+                }
             }
         }
     }
@@ -180,21 +187,21 @@ fun SubCategoryCard(
 }
 
 @Composable
-fun SubCategoryContentView(subCategory: SubCategory) {
+fun SubCategoryContentView(subCategory: SubCategory, role: String) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
         items(subCategory.data) { contentData ->
-            ContentCard(contentData)
+            ContentCard(contentData, role)
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
 @Composable
-fun ContentCard(contentData: ContentData) {
+fun ContentCard(contentData: ContentData, role: String) {
     var rating by remember { mutableStateOf(contentData.rating) }
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -203,13 +210,15 @@ fun ContentCard(contentData: ContentData) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = contentData.content, style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Rating: $rating", style = MaterialTheme.typography.bodyMedium)
-            Slider(
-                value = rating.toFloat(),
-                onValueChange = { rating = it.toInt() },
-                valueRange = 0f..5f,
-                steps = 4
-            )
+            if (role != "GUEST") {
+                Text(text = "Rating: $rating", style = MaterialTheme.typography.bodyMedium)
+                Slider(
+                    value = rating.toFloat(),
+                    onValueChange = { rating = it.toInt() },
+                    valueRange = 0f..5f,
+                    steps = 4
+                )
+            }
         }
     }
 }

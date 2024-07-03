@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mad_project2024.models.Country
 import com.example.mad_project2024.models.TokenManager
+import com.example.mad_project2024.models.user.ListUser
 import com.example.mad_project2024.repository.AuthRepository
+import com.example.mad_project2024.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,13 +24,15 @@ data class AuthState(
     val email: String = "",
     val password: String = "",
     val confirmPassword: String = "",
-    val homeCountry: String ="",
+    val homeCountry: String = "",
+    val role: String = "GUEST",
     val errorMessage: String? = null
 )
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val repository: AuthRepository,
+    private val userRepository: UserRepository,
     private val tokenManager: TokenManager,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
@@ -40,6 +44,7 @@ class AuthViewModel @Inject constructor(
     val countries: StateFlow<List<Country>> = _countries
 
     init {
+        fetchUserRole()
         fetchCountries()
     }
 
@@ -100,6 +105,7 @@ class AuthViewModel @Inject constructor(
                     tokenManager.saveToken(token)
                     Log.d("AuthViewModel", "Token saved: ${token.access_token}")
                     _authState.value = _authState.value.copy(errorMessage = "Logged In successfully!")
+                    fetchUserRole()
                 }
             } else {
                 _authState.value = _authState.value.copy(errorMessage = result.exceptionOrNull()?.message)
@@ -147,4 +153,21 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    private fun fetchUserRole() {
+        viewModelScope.launch {
+            val result = userRepository.getSelfUser()
+            if (result.isSuccess) {
+                val user = result.getOrNull()
+                Log.d("AuthViewModel", "User fetched: $user")
+                _authState.value = _authState.value.copy(
+                    displayedName = user?.nickName ?: "",
+                    email = user?.email ?: "",
+                    role = user?.role ?: "GUEST"
+                )
+            } else {
+                Log.e("AuthViewModel", "Failed to fetch user role: ${result.exceptionOrNull()}")
+                _authState.value = _authState.value.copy(errorMessage = result.exceptionOrNull()?.message)
+            }
+        }
+    }
 }

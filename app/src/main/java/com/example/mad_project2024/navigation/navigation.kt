@@ -11,7 +11,7 @@ import androidx.navigation.navArgument
 import com.example.mad_project2024.screens.AuthScreen
 import com.example.mad_project2024.screens.HomeScreen
 import com.example.mad_project2024.screens.MainCategoryScreen
-import com.example.mad_project2024.screens.SubCategoryScreen
+//import com.example.mad_project2024.screens.SubCategoryScreen
 import com.example.mad_project2024.screens.SuggestionsScreen
 import com.example.mad_project2024.viewmodels.AuthViewModel
 import com.example.mad_project2024.viewmodels.InformationViewModel
@@ -33,12 +33,12 @@ fun Navigation() {
             val viewModel: ModeViewModel = hiltViewModel()
             HomeScreen(navController, viewModel)
         }
-        composable(
-            route = Screen.MainCategoryScreen.route + "/{countryCode}"
-        ) { backStackEntry ->
+        composable(route = Screen.MainCategoryScreen.route + "/{countryCode}") { backStackEntry ->
             val countryCode = backStackEntry.arguments?.getString("countryCode") ?: ""
-            val viewModel: InformationViewModel = hiltViewModel()
-            MainCategoryScreen(navController = navController, viewModel = viewModel, countryCode = countryCode)
+            val viewModel: ModeViewModel = hiltViewModel()
+            val viewModel2: InformationViewModel = hiltViewModel()
+            val authViewModel: AuthViewModel = hiltViewModel()
+            MainCategoryScreen(navController = navController, viewModel = viewModel2, authViewModel = authViewModel, countryCode = countryCode)
         }
         /*
         composable(route = Screen.SubCategoryScreen.route + "/{countryCode}") { backStackEntry ->
