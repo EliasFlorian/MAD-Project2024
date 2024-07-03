@@ -1,6 +1,8 @@
 package com.example.mad_project2024.api
 
+import com.example.mad_project2024.models.Category
 import com.example.mad_project2024.models.Country
+import com.example.mad_project2024.models.InformationResponse
 import com.example.mad_project2024.models.MessageResponse
 import com.example.mad_project2024.models.SubCategory
 import com.example.mad_project2024.models.Suggestion
@@ -82,7 +84,10 @@ interface ApiService {
 
     @DELETE("private/suggestions/{id}")
     fun deleteSuggestion(@Path("id") id: String): Call<Void>
+    @GET("public/information/{countryCode}")
+    fun getInformation(@Path("countryCode") countryCode: String): Call<List<InformationResponse>>
 
     @GET("public/information/getSubCategories/{country_code}")
     suspend fun getSubCategories(@Path("country_code") countryCode: String): List<SubCategory>
+
 }
