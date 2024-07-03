@@ -1,12 +1,25 @@
 package com.example.mad_project2024.repository
 
 import com.example.mad_project2024.api.ApiService
+import com.example.mad_project2024.models.SubCategory
 import com.example.mad_project2024.models.Suggestion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SuggestionsRepository @Inject constructor(private val api: ApiService) {
+
+    suspend fun getSubCategories(countryCode: String): Result<List<SubCategory>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getSubCategories(countryCode)
+                Result.success(response)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
 
     suspend fun getSuggestions(): Result<List<Suggestion>> {
         return withContext(Dispatchers.IO) {

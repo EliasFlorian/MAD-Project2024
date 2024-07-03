@@ -2,7 +2,7 @@ package com.example.mad_project2024.repository
 
 import com.example.mad_project2024.api.ApiService
 import com.example.mad_project2024.models.Country
-import com.example.mad_project2024.models.auth.Token
+import com.example.mad_project2024.models.Token
 import com.example.mad_project2024.models.user.CreateUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

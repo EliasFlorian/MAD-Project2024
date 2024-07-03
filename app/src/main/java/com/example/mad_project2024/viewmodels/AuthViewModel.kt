@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mad_project2024.models.Country
-import com.example.mad_project2024.models.auth.TokenManager
+import com.example.mad_project2024.models.TokenManager
 import com.example.mad_project2024.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

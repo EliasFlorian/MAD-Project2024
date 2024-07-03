@@ -1,5 +1,6 @@
 package com.example.mad_project2024.navigation
 
+
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
@@ -14,6 +15,10 @@ import com.example.mad_project2024.screens.MainCategoryScreen
 import com.example.mad_project2024.screens.StartScreen
 import com.example.mad_project2024.screens.SubCategoryScreen
 import com.example.mad_project2024.screens.SuggestionsScreen
+import com.example.mad_project2024.viewmodels.AuthViewModel
+import com.example.mad_project2024.viewmodels.InformationViewModel
+import com.example.mad_project2024.viewmodels.ModeViewModel
+import com.example.mad_project2024.viewmodels.SuggestionsViewModel
 
 @Composable
 fun Navigation() {
@@ -32,15 +37,14 @@ fun Navigation() {
         ) {
             AuthScreen(navController)
         }
-        composable(
-            route = Screen.HomeScreen.route
-        ) {
-            HomeScreen(navController)
+        composable(route = Screen.HomeScreen.route) {
+            val viewModel: ModeViewModel = hiltViewModel()
+            HomeScreen(navController, viewModel)
         }
-        composable(
-            route = Screen.MainCategoryScreen.route
-        ) {
-            MainCategoryScreen(navController)
+        composable(route = Screen.MainCategoryScreen.route + "/{countryCode}") { backStackEntry ->
+            val countryCode = backStackEntry.arguments?.getString("countryCode") ?: ""
+            val viewModel: InformationViewModel = hiltViewModel()
+            MainCategoryScreen(navController = navController, viewModel = viewModel, countryCode = countryCode)
         }
         composable(
             route = Screen.SubCategoryScreen.route
@@ -51,14 +55,23 @@ fun Navigation() {
             route = Screen.AccountScreen.route
         ) {
             AccountScreen(navController)
+
+      //  composable(route = Screen.SubCategoryScreen.route + "/{countryCode}") { backStackEntry ->
+    //        val countryCode = backStackEntry.arguments?.getString("countryCode") ?: ""
+  //          val viewModel: InformationViewModel = hiltViewModel()
+//            SubCategoryScreen(navController = navController, viewModel = viewModel, countryCode = countryCode)
+
         }
+
         composable(
-            route = "${Screen.SuggestionsScreen.route}/{subcategory}",
-            arguments = listOf(navArgument("subcategory") { type = NavType.StringType })
+            route = Screen.SuggestionsScreen.route + "/{subcategory}"
         ) { backStackEntry ->
             val subcategory = backStackEntry.arguments?.getString("subcategory") ?: ""
-            SuggestionsScreen(navController = navController, viewModel = hiltViewModel(), subcategory = subcategory)
+            val viewModel: SuggestionsViewModel = hiltViewModel()
+            val navController = rememberNavController()
+            SuggestionsScreen(navController = navController, viewModel = viewModel, subcategory = subcategory)
         }
+
 
 
     }
