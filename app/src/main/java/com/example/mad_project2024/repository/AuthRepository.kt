@@ -4,6 +4,7 @@ import com.example.mad_project2024.api.ApiService
 import com.example.mad_project2024.models.Country
 import com.example.mad_project2024.models.Token
 import com.example.mad_project2024.models.user.CreateUser
+import com.example.mad_project2024.models.user.ListUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -42,6 +43,20 @@ class AuthRepository @Inject constructor(private val api: ApiService) {
         }
     }
 
+    suspend fun getUserDetails(token: String): Result<ListUser> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = api.getSelfUser("Bearer $token").execute()
+                if (response.isSuccessful) {
+                    Result.success(response.body()!!)
+                } else {
+                    Result.failure(Exception("Failed to fetch user details: ${response.message()}"))
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
     suspend fun getCountries(): Result<List<Country>> {
         return withContext(Dispatchers.IO) {
             try {
@@ -71,4 +86,5 @@ class AuthRepository @Inject constructor(private val api: ApiService) {
             }
         }
     }
+
 }

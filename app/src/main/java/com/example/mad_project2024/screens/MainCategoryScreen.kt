@@ -35,7 +35,8 @@ fun MainCategoryScreen(
     navController: NavController,
     viewModel: InformationViewModel = hiltViewModel(),
     authViewModel: AuthViewModel = hiltViewModel(),
-    countryCode: String
+    countryCode: String,
+    mode: String
 ) {
     val informationState by viewModel.informationState.collectAsState()
     val authState by authViewModel.authState.collectAsState()
@@ -49,33 +50,34 @@ fun MainCategoryScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        text = selectedSubCategory?.title ?: "Categories"
-                    )
-                },
+                title = { Text(text = selectedSubCategory?.title ?: "Categories") },
                 actions = {
-                    if (selectedSubCategory != null && informationState.role != "GUEST") {
-                        IconButton(onClick = { /* navigate to add suggestion screen */ }) {
+                    if (selectedSubCategory != null && !authState.isGuest) {
+                        IconButton(onClick = { navController.navigate("${Screen.SuggestionsScreen.route}/${selectedSubCategory!!.title}") }) {
                             Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
                         }
                     }
                 }
             )
         },
-        bottomBar = { BottomBar() }
+        bottomBar = { BottomBar(navController) }
     ) { innerPadding ->
-        informationState.information?.let {
+        informationState.information?.let { information ->
             if (selectedSubCategory == null) {
-                MainView(navController, it, countryCode, onSubCategoryClick = { subCategory ->
-                    selectedSubCategory = subCategory
-                })
-            } else {
-                informationState.role?.let { it1 ->
-                    SubCategoryContentView(subCategory = selectedSubCategory!!,
-                        it1
-                    )
+                if (mode == "interaction") {
+                    // Directly show "Communication" category and its subcategories
+                    val communicationCategory = information.categories.find { it.title == "Communication" }
+                    communicationCategory?.let {
+                        SubCategoryList(it.subCategories, authState.role, navController)
+                    }
+                } else {
+                    // Show all categories for travel mode
+                    MainView(navController, information, onSubCategoryClick = { subCategory ->
+                        selectedSubCategory = subCategory
+                    })
                 }
+            } else {
+                SubCategoryContentView(subCategory = selectedSubCategory!!, role = authState.role, navController)
             }
         }
     }
@@ -85,12 +87,8 @@ fun MainCategoryScreen(
 fun MainView(
     navController: NavController,
     informationResponse: InformationResponse,
-    countryCode: String,
     onSubCategoryClick: (SubCategory) -> Unit
 ) {
-    LaunchedEffect(Unit) {
-        Log.d("MainView", "Main categories updated: ${informationResponse.categories}")
-    }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -187,7 +185,20 @@ fun SubCategoryCard(
 }
 
 @Composable
-fun SubCategoryContentView(subCategory: SubCategory, role: String) {
+fun SubCategoryList(subCategories: List<SubCategory>, role: String, navController: NavController) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        items(subCategories) { subCategory ->
+            SubCategoryContentView(subCategory, role, navController)
+        }
+    }
+}
+
+@Composable
+fun SubCategoryContentView(subCategory: SubCategory, role: String, navController: NavController? = null) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -196,6 +207,13 @@ fun SubCategoryContentView(subCategory: SubCategory, role: String) {
         items(subCategory.data) { contentData ->
             ContentCard(contentData, role)
             Spacer(modifier = Modifier.height(16.dp))
+        }
+        if (role != "GUEST" && navController != null) {
+            item {
+                IconButton(onClick = { navController.navigate("${Screen.SuggestionsScreen.route}/${subCategory.title}") }) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                }
+            }
         }
     }
 }
@@ -210,8 +228,8 @@ fun ContentCard(contentData: ContentData, role: String) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = contentData.content, style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Rating: $rating", style = MaterialTheme.typography.bodyMedium)
             if (role != "GUEST") {
-                Text(text = "Rating: $rating", style = MaterialTheme.typography.bodyMedium)
                 Slider(
                     value = rating.toFloat(),
                     onValueChange = { rating = it.toInt() },

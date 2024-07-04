@@ -91,7 +91,7 @@ dependencies {
 
 //    //for date picker
 
-    implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.9.0-rc")
+    implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
     implementation ("com.google.android.material:material:1.8.0")
 
 
