@@ -35,6 +35,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.mad_project2024.R
 import com.example.mad_project2024.components.BottomBar
 import com.example.mad_project2024.components.TopAppBar
@@ -43,15 +45,15 @@ import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AccountScreen() {
+fun AccountScreen(navController: NavController) {
 
     Scaffold (
 
         topBar = {
-            TopAppBar(title = "Account")
+            TopAppBar(title = "Account", navController)
         },
         bottomBar = {
-            BottomBar()
+            BottomBar(navController)
         }
 
     ) {innerPadding ->
@@ -142,6 +144,6 @@ fun CustomImage(modifier: Modifier = Modifier) {
 @Composable
 fun AccountScreenPreview() {
     MovieAppMAD24Theme {
-        AccountScreen()
+        AccountScreen(rememberNavController())
     }
 }

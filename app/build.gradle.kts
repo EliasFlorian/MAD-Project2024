@@ -1,3 +1,5 @@
+
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
@@ -86,6 +88,13 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+//    //for date picker
+
+    implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.9.0-rc")
+    implementation ("com.google.android.material:material:1.8.0")
+
+
 }
 
 // Allow references to generated code

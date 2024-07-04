@@ -18,11 +18,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavController
+import com.example.mad_project2024.navigation.Screen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(title: String) {
+fun TopAppBar(title: String, navController: NavController) {
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -37,16 +39,16 @@ fun TopAppBar(title: String) {
                 overflow = TextOverflow.Ellipsis,
             )
         },
-        navigationIcon = {
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Localized description"
-                )
-            }
-        },
+//        navigationIcon = {
+//            IconButton(onClick = { /* do something */ }) {
+//                Icon(
+//                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+//                    contentDescription = "Localized description"
+//                )
+//            }
+//        },
         actions = {
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = { navController.navigate(route = Screen.AccountScreen.route) }) {
                 Icon(
                     imageVector = Icons.Filled.AccountCircle,
                     contentDescription = "Localized description"
@@ -61,7 +63,7 @@ fun TopAppBar(title: String) {
 
 @Composable
 fun BottomBar(
-
+navController: NavController
 ) {
     BottomAppBar(
         actions = {
@@ -69,7 +71,7 @@ fun BottomBar(
                 .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center)
             {
-                IconButton(onClick = { /* do something */ }) {
+                IconButton(onClick = { navController.navigate(route = Screen.HomeScreen.route) }) {
                     Icon(Icons.Outlined.Home, contentDescription = "Localized description")
                 }
 //                IconButton(onClick = { /* do something */ }) {
