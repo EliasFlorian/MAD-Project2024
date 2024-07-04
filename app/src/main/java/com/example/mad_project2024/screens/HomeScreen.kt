@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.setValue
 import androidx.fragment.app.DialogFragment;
 
@@ -62,14 +63,18 @@ import kotlin.math.round
 
 import com.example.mad_project2024.viewmodels.AuthViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import java.time.format.DateTimeFormatter
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavController, viewModel: AuthViewModel = hiltViewModel()) {
+    //country picker
     val authState by viewModel.authState.collectAsState()
     val countries by viewModel.countries.collectAsState(emptyList())
     var isDropdownExpanded by remember { mutableStateOf(false) }
     var selectedCountry by remember { mutableStateOf<Country?>(null) }
+
+
 
     Scaffold (
 
@@ -170,8 +175,36 @@ fun ModeCard(title: String, description: String, navController: NavController) {
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TravelModeCard(title: String, description: String, navController: NavController) {
+
+    //date picker
+    var pickedStartDate by remember {
+        mutableStateOf(LocalDate.now())
+    }
+    var pickedEndDate by remember {
+        mutableStateOf(LocalDate.now().plusDays(3))
+    }
+
+    var showStartDatePicker by remember { mutableStateOf(false) }
+    var showEndDatePicker by remember { mutableStateOf(false) }
+
+    val formattedStartDate by remember {
+        derivedStateOf {
+            DateTimeFormatter
+                .ofPattern("MMM dd yyyy")
+                .format(pickedStartDate)
+        }
+    }
+    val formattedEndDate by remember {
+        derivedStateOf {
+            DateTimeFormatter
+                .ofPattern("MMM dd yyyy")
+                .format(pickedEndDate)
+        }
+    }
+
 
     val getDatePicker = MaterialDatePicker.Builder.datePicker()
         .setTitleText("Select date")
@@ -224,7 +257,9 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
                 horizontalArrangement = Arrangement.Center
             ) {
             Button(
-                onClick = { dateDialogState.show() },
+                onClick = { showStartDatePicker = true
+                          dateDialogState.show()
+                          }, //dateDialogState.show()
                 modifier = Modifier
                     .width(150.dp)
                     .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
@@ -233,7 +268,9 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
                 Text(text = "Start", fontSize = 16.sp)
             }
             Button(
-                onClick = { dateDialogState.show() },
+                onClick = { showEndDatePicker = true
+                          dateDialogState.show()
+                          }, //dateDialogState.show()
 
                 modifier = Modifier
                     .width(150.dp)
@@ -242,7 +279,22 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
                 Text(text = "End", fontSize = 16.sp)
             }
 
+
+
+
+        }
+
+        Row(modifier = Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(text = formattedStartDate)
+            Spacer(modifier = Modifier.padding(16.dp))
+            Text(text = formattedEndDate)
+        }
+
             //datepicker
+        if (showStartDatePicker) {
             MaterialDialog(
                 dialogState = dateDialogState,
                 shape = RoundedCornerShape(10.dp),
@@ -262,15 +314,52 @@ fun TravelModeCard(title: String, description: String, navController: NavControl
                         //dateInactiveTextColor = MaterialTheme.colorScheme.primary,
                         dateActiveBackgroundColor = MaterialTheme.colorScheme.primary,
 
-                    )
+                        )
 
-                )
+                ) {
+                    pickedStartDate = it
+                    //pickedEndDate = it
+                }
             }
+        }
+
+        if (showEndDatePicker) {
+            MaterialDialog(
+                dialogState = dateDialogState,
+                shape = RoundedCornerShape(10.dp),
+                buttons = {
+                    positiveButton(text = "Ok")
+                    negativeButton(
+                        text = "Cancel")
+
+                }
+                //backgroundColor = MaterialTheme.colorScheme.primary
+            ) {
+                datepicker(
+                    initialDate = LocalDate.now(),
+                    title = "pick a date",
+                    colors = DatePickerDefaults.colors(
+                        headerBackgroundColor = MaterialTheme.colorScheme.primary,
+                        //dateInactiveTextColor = MaterialTheme.colorScheme.primary,
+                        dateActiveBackgroundColor = MaterialTheme.colorScheme.primary,
+
+                        )
+
+                ) {
+                    //pickedStartDate = it
+                    pickedEndDate = it
+                }
+            }
+        }
+
         }
 
 
 
-    }
+
+
+
+
 
 }
 

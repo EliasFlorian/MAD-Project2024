@@ -39,14 +39,14 @@ fun TopAppBar(title: String, navController: NavController) {
                 overflow = TextOverflow.Ellipsis,
             )
         },
-//        navigationIcon = {
-//            IconButton(onClick = { /* do something */ }) {
-//                Icon(
-//                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-//                    contentDescription = "Localized description"
-//                )
-//            }
-//        },
+        navigationIcon = {
+            IconButton(onClick = { /* do something */ }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Localized description"
+                )
+            }
+        },
         actions = {
             IconButton(onClick = { navController.navigate(route = Screen.AccountScreen.route) }) {
                 Icon(

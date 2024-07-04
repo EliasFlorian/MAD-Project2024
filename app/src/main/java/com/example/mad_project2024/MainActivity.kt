@@ -3,6 +3,7 @@ package com.example.mad_project2024
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import com.example.mad_project2024.navigation.Navigation
 import com.example.mad_project2024.navigation.Screen
 import com.example.mad_project2024.screens.AuthScreen
@@ -15,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MovieAppMAD24Theme {
                 Navigation()
