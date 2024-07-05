@@ -1,9 +1,12 @@
 package com.example.mad_project2024.api
 
+import com.example.mad_project2024.models.Category
 import com.example.mad_project2024.models.Country
+import com.example.mad_project2024.models.InformationResponse
 import com.example.mad_project2024.models.MessageResponse
+import com.example.mad_project2024.models.SubCategory
 import com.example.mad_project2024.models.Suggestion
-import com.example.mad_project2024.models.auth.Token
+import com.example.mad_project2024.models.Token
 import com.example.mad_project2024.models.user.CreateUser
 import com.example.mad_project2024.models.user.ListUser
 import com.example.mad_project2024.models.user.SelfUpdateUser
@@ -81,4 +84,10 @@ interface ApiService {
 
     @DELETE("private/suggestions/{id}")
     fun deleteSuggestion(@Path("id") id: String): Call<Void>
+    @GET("public/information/{countryCode}")
+    fun getInformation(@Path("countryCode") countryCode: String): Call<InformationResponse>
+
+    @GET("public/information/getSubCategories/{country_code}")
+    suspend fun getSubCategories(@Path("country_code") countryCode: String): List<SubCategory>
+
 }

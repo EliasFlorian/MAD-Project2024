@@ -1,42 +1,105 @@
 package com.example.mad_project2024.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.mad_project2024.R
-import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 import com.example.mad_project2024.components.TopAppBar
 import com.example.mad_project2024.components.BottomBar
+import com.example.mad_project2024.models.InformationResponse
+import com.example.mad_project2024.models.SubCategory
+import com.example.mad_project2024.models.ContentData
 import com.example.mad_project2024.navigation.Screen
-
+import com.example.mad_project2024.viewmodels.InformationViewModel
+import com.example.mad_project2024.viewmodels.AuthViewModel
+/*
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainCategoryScreen(navController: NavController) {
+fun MainCategoryScreen(
+    navController: NavController,
+    viewModel: InformationViewModel = hiltViewModel(),
+    authViewModel: AuthViewModel = hiltViewModel(),
+    countryCode: String,
+    mode: String
+) {
+    val informationState by viewModel.informationState.collectAsState()
+    val authState by authViewModel.authState.collectAsState()
+    var selectedSubCategory by remember { mutableStateOf<SubCategory?>(null) }
+
+    LaunchedEffect(countryCode) {
+        Log.d("MainCategoryScreen", "Fetching information for country: $countryCode")
+        viewModel.fetchInformation(countryCode)
+    }
+
     Scaffold(
-        topBar = { TopAppBar(title = stringResource(id = R.string.travel_mode)) },
-        bottomBar = { BottomBar() }
+        topBar = {
+            TopAppBar(
+                title = { Text(text = selectedSubCategory?.title ?: "Categories") },
+                actions = {
+                    if (selectedSubCategory != null && !authState.isGuest) {
+                        IconButton(onClick = { navController.navigate("${Screen.SuggestionsScreen.route}/${selectedSubCategory!!.title}") }) {
+                            Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                        }
+                    }
+                }
+            )
+        },
+        bottomBar = { BottomBar(navController) }
     ) { innerPadding ->
-        MainView(navController)
+        informationState.information?.let { information ->
+            when (mode) {
+                "interaction" -> {
+                    if (selectedSubCategory == null) {
+                        // Directly show "Communication" category and its subcategories
+                        val communicationCategory = information.categories.find { it.title == "Communication" }
+                        communicationCategory?.let {
+                            SubCategoryList(navController, it.subCategories, authState.isGuest)
+                        }
+                    } else {
+                        SubCategoryContentView(subCategory = selectedSubCategory!!, isGuest = authState.isGuest, navController)
+                    }
+                }
+                "travel" -> {
+                    if (selectedSubCategory == null) {
+                        // Show all categories for travel mode
+                        MainView(navController, information, countryCode, onSubCategoryClick = { subCategory ->
+                            selectedSubCategory = subCategory
+                        })
+                    } else {
+                        SubCategoryContentView(subCategory = selectedSubCategory!!, isGuest = authState.isGuest, navController)
+                    }
+                }
+                else -> {
+                    // Handle other modes if any
+                }
+            }
+        }
     }
 }
 
 @Composable
-fun MainView(navController: NavController) {
+fun MainView(
+    navController: NavController,
+    informationResponse: InformationResponse,
+    countryCode: String,
+    onSubCategoryClick: (SubCategory) -> Unit
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -44,30 +107,34 @@ fun MainView(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        item {
-            CategoryCard(navController, title = stringResource(R.string.com_general), description = stringResource(R.string.com_description_general))
-            Spacer(Modifier.size(56.dp))
-        }
-        item {
-            CategoryCard(navController, title = stringResource(R.string.com_communication), description = stringResource(R.string.com_description_communication))
-            Spacer(Modifier.size(56.dp))
-        }
-        item {
-            CategoryCard(navController, title = stringResource(R.string.com_travel), description = stringResource(R.string.com_description_travel))
+        items(informationResponse.categories) { category ->
+            if (category.title != "Public Holidays") { // Comment out Public Holidays
+                CategoryCard(navController, category.title, category.description, category.subCategories, onSubCategoryClick)
+                Spacer(Modifier.size(56.dp))
+            }
         }
     }
 }
 
 @Composable
-fun CategoryCard(navController: NavController, title: String, description: String) {
+fun CategoryCard(
+    navController: NavController,
+    title: String,
+    description: String,
+    subCategories: List<SubCategory>,
+    onSubCategoryClick: (SubCategory) -> Unit
+) {
     var showInformation by remember { mutableStateOf(true) }
-    var expanded by remember { mutableStateOf(false) }
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -91,19 +158,8 @@ fun CategoryCard(navController: NavController, title: String, description: Strin
             }
             AnimatedVisibility(visible = !showInformation) {
                 Column {
-                    val subCategories = when (title) {
-                        stringResource(id = R.string.com_general) -> listOf("Public Holidays", "Healthcare-System", "Restrictions", "Fun facts", "Dos and Don’ts")
-                        stringResource(id = R.string.com_communication) -> listOf("Local greetings", "Etiquette", "Expectations", "Popular phrases", "Gestures and facial expressions")
-                        stringResource(id = R.string.com_travel) -> listOf("Public Transport", "Payment norms", "Traveling by car", "Traveling on foot", "Risks and dangers", "Shopping", "Gastronomy")
-                        else -> emptyList()
-                    }
                     subCategories.forEach { subCategory ->
-                        SubCategoryCard(
-                            navController = navController,
-                            category = title,
-                            subcategory = subCategory,
-                            description = "Description for $subCategory"
-                        )
+                        SubCategoryCard(navController, subCategory, onSubCategoryClick)
                     }
                 }
             }
@@ -112,24 +168,30 @@ fun CategoryCard(navController: NavController, title: String, description: Strin
 }
 
 @Composable
-fun SubCategoryCard(navController: NavController, category: String, subcategory: String, description: String) {
+fun SubCategoryCard(
+    navController: NavController,
+    subCategory: SubCategory,
+    onSubCategoryClick: (SubCategory) -> Unit
+) {
     ElevatedCard(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navController.navigate("${Screen.SuggestionsScreen.route}/$subcategory") }
+            .clickable { onSubCategoryClick(subCategory) }
     ) {
         Column {
             Text(
-                text = subcategory,
+                text = subCategory.title,
                 modifier = Modifier.padding(8.dp, bottom = 0.dp),
                 textAlign = TextAlign.Left,
                 style = MaterialTheme.typography.titleSmall
             )
             Text(
-                text = description,
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                text = subCategory.description,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
                 textAlign = TextAlign.Left,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -137,11 +199,60 @@ fun SubCategoryCard(navController: NavController, category: String, subcategory:
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun MainCategoryScreenPreview() {
-    val navController = rememberNavController()
-    MovieAppMAD24Theme {
-        MainCategoryScreen(navController = navController)
+fun SubCategoryList(navController: NavController, subCategories: List<SubCategory>, isGuest: Boolean) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        items(subCategories) { subCategory ->
+            SubCategoryContentView(subCategory, isGuest, navController)
+        }
     }
 }
+
+@Composable
+fun SubCategoryContentView(subCategory: SubCategory, isGuest: Boolean, navController: NavController? = null) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        items(subCategory.data) { contentData ->
+            ContentCard(contentData, isGuest)
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        if (!isGuest && navController != null) {
+            item {
+                IconButton(onClick = { navController.navigate("${Screen.SuggestionsScreen.route}/${subCategory.title}") }) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ContentCard(contentData: ContentData, isGuest: Boolean) {
+    var rating by remember { mutableStateOf(contentData.rating) }
+    ElevatedCard(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = contentData.content, style = MaterialTheme.typography.bodyLarge)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Rating: $rating", style = MaterialTheme.typography.bodyMedium)
+            if (!isGuest) {
+                Slider(
+                    value = rating.toFloat(),
+                    onValueChange = { rating = it.toInt() },
+                    valueRange = 0f..5f,
+                    steps = 4
+                )
+            }
+        }
+    }
+}
+*/

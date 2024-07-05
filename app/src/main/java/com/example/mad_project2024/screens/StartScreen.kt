@@ -16,14 +16,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.mad_project2024.R
+import com.example.mad_project2024.navigation.Screen
 import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
 
 
 
 
 @Composable
-fun StartScreen() {
+fun StartScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -63,15 +66,28 @@ fun StartScreen() {
                 )
             }
 
-            Button(
-                onClick = { /*TODO*/ },
+            Column {
+                Button(
+                    onClick = { navController.navigate(Screen.AuthScreen.route) },
 
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 40.dp)
-            ) {
-                Text(text = "Explore", fontSize = 18.sp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp)
+                ) {
+                    Text(text = "Login / Register", fontSize = 16.sp)
+                }
+                Button(
+                    onClick = { navController.navigate(Screen.HomeScreen.route) },
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 40.dp)
+                ) {
+                    Text(text = "Continue as a Guest", fontSize = 16.sp)
+                }
             }
+
+
         }
     }
 }
@@ -81,6 +97,6 @@ fun StartScreen() {
 @Composable
 fun PreviewStartScreen() {
     MovieAppMAD24Theme {
-        StartScreen()
+        StartScreen(rememberNavController())
     }
 }

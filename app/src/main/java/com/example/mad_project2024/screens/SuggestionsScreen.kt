@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mad_project2024.models.Suggestion
 import com.example.mad_project2024.viewmodels.SuggestionsViewModel
@@ -17,7 +18,7 @@ import com.example.mad_project2024.viewmodels.SuggestionsViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuggestionsScreen(navController: NavController, viewModel: SuggestionsViewModel, subcategory: String) {
+fun SuggestionsScreen(navController: NavController, viewModel: SuggestionsViewModel = hiltViewModel(), subcategory: String) {
     val suggestions by viewModel.suggestions.collectAsState()
     val userRole by viewModel.userRole.collectAsState()
     val homeCountry by viewModel.homeCountry.collectAsState()
@@ -34,11 +35,12 @@ fun SuggestionsScreen(navController: NavController, viewModel: SuggestionsViewMo
     )
 }
 
-
 @Composable
 fun AdminSuggestionsList(suggestions: List<Suggestion>, viewModel: SuggestionsViewModel) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(16.dp)
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
         items(suggestions) { suggestion ->
             SuggestionCard(suggestion, viewModel)
@@ -49,7 +51,9 @@ fun AdminSuggestionsList(suggestions: List<Suggestion>, viewModel: SuggestionsVi
 @Composable
 fun SuggestionCard(suggestion: Suggestion, viewModel: SuggestionsViewModel) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = "Content: ${suggestion.suggestedContent.content}")
@@ -80,7 +84,9 @@ fun UserSuggestionForm(homeCountry: String, subcategory: String, viewModel: Sugg
     var content by remember { mutableStateOf(TextFieldValue()) }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

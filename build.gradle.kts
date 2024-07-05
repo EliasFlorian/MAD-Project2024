@@ -17,10 +17,10 @@ buildscript {
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.51.1")
     }
 }
-allprojects {
-    repositories {
+//allprojects {
+//    repositories {
 //        google()
 //        mavenCentral()
-    }
-}
+//    }
+//}
 
