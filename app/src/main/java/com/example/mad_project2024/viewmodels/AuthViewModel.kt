@@ -117,6 +117,8 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             if (_authState.value.password != _authState.value.confirmPassword) {
                 _authState.value = _authState.value.copy(errorMessage = "Passwords do not match")
+            } else if (!repository.isPasswordValid(_authState.value.password)) {
+                _authState.value = _authState.value.copy(errorMessage = repository.getPasswordRequirements().joinToString("\n"))
             } else {
                 val result = repository.register(
                     _authState.value.username,

@@ -125,7 +125,6 @@ fun AuthScreen(navController: NavController, viewModel: AuthViewModel = hiltView
                     viewModel.register()
                 } else {
                     viewModel.login()
-                    navController.navigate(route = Screen.HomeScreen.route)
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -150,5 +149,12 @@ fun AuthScreen(navController: NavController, viewModel: AuthViewModel = hiltView
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = it, color = MaterialTheme.colorScheme.error)
         }
+
+        LaunchedEffect(authState.errorMessage, authState.isRegister) {
+            if (authState.errorMessage == "Logged In successfully!" || authState.errorMessage == "Guest access successful!") {
+                navController.navigate(route = Screen.HomeScreen.route)
+            }
+        }
     }
 }
+

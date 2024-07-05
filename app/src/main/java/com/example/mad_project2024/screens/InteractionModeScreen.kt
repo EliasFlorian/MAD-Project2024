@@ -57,7 +57,8 @@ fun InteractionModeScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        contentPadding =  PaddingValues(20.dp),
+                        verticalArrangement =  Arrangement.Center
                     ) {
                         items(category.subCategories) { subCategory ->
                             SubCategoryCard(navController, subCategory) {

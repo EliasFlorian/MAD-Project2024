@@ -11,6 +11,22 @@ import javax.inject.Inject
 
 class AuthRepository @Inject constructor(private val api: ApiService) {
 
+    private val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=!])(?=\\S+$).{8,}$"
+
+    fun isPasswordValid(password: String): Boolean {
+        return password.matches(passwordPattern.toRegex())
+    }
+
+    // Retrieve password requirements
+    fun getPasswordRequirements(): List<String> {
+        return listOf(
+            "Password must be at least 8 characters long",
+            "Password must contain at least one uppercase letter",
+            "Password must contain at least one lowercase letter",
+            "Password must contain at least one number",
+            "Password must contain at least one special character"
+        )
+    }
     suspend fun login(username: String, password: String): Result<Token> {
         return withContext(Dispatchers.IO) {
             try {
