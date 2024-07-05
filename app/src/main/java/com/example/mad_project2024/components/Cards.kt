@@ -3,14 +3,17 @@ package com.example.mad_project2024.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -21,6 +24,9 @@ import com.example.mad_project2024.models.Country
 import com.example.mad_project2024.models.SubCategory
 import com.example.mad_project2024.navigation.Screen
 import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -201,30 +207,31 @@ fun TravelModeCard(
     navController: NavController,
     selectedCountry: Country?
 ) {
-   //var pickedStartDate by remember { mutableStateOf(LocalDate.now()) }
-   //var pickedEndDate by remember { mutableStateOf(LocalDate.now().plusDays(3)) }
+   var pickedStartDate by remember { mutableStateOf(LocalDate.now()) }
+   var pickedEndDate by remember { mutableStateOf(LocalDate.now().plusDays(3)) }
 
-   //var showStartDatePicker by remember { mutableStateOf(false) }
-   //var showEndDatePicker by remember { mutableStateOf(false) }
+   var showStartDatePicker by remember { mutableStateOf(false) }
+   var showEndDatePicker by remember { mutableStateOf(false) }
 
-   //val formattedStartDate by remember {
-   //    derivedStateOf {
-   //        DateTimeFormatter.ofPattern("MMM dd yyyy").format(pickedStartDate)
-   //    }
-   //}
-   //val formattedEndDate by remember {
-   //    derivedStateOf {
-   //        DateTimeFormatter.ofPattern("MMM dd yyyy").format(pickedEndDate)
-   //    }
-   //}
+   val formattedStartDate by remember {
+       derivedStateOf {
+           DateTimeFormatter.ofPattern("MMM dd yyyy").format(pickedStartDate)
+       }
+   }
+   val formattedEndDate by remember {
+       derivedStateOf {
+           DateTimeFormatter.ofPattern("MMM dd yyyy").format(pickedEndDate)
+       }
+   }
 
     ElevatedCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier
+            .padding(20.dp)
             .fillMaxWidth()
             .clickable {
                 selectedCountry?.let {
-                    navController.navigate(Screen.TravelModeScreen.createRoute(it.code))
+                    navController.navigate("${Screen.TravelModeScreen.route}/${it.code}")
                 }
             }
     ) {
@@ -245,34 +252,34 @@ fun TravelModeCard(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
-        //    Row(
-        //        modifier = Modifier.fillMaxWidth(),
-        //        horizontalArrangement = Arrangement.Center
-        //    ) {
-        //        Button(
-        //            onClick = { showStartDatePicker = true },
-        //            modifier = Modifier
-        //                .width(150.dp)
-        //                .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
-        //        ) {
-        //            Text(text = "Start", fontSize = 16.sp)
-        //        }
-        //        Button(
-        //            onClick = { showEndDatePicker = true },
-        //            modifier = Modifier
-        //                .width(150.dp)
-        //                .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
-        //        ) {
-        //            Text(text = "End", fontSize = 16.sp)
-        //        }
-        //    }
-        //    Row(
-        //        modifier = Modifier.fillMaxWidth(),
-        //        horizontalArrangement = Arrangement.Center
-        //    ) {
-        //        Text(text = formattedStartDate)
-        //        Spacer(modifier = Modifier.padding(16.dp))
-        //        Text(text = formattedEndDate)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Button(
+                    onClick = { showStartDatePicker = true },
+                    modifier = Modifier
+                        .width(150.dp)
+                        .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
+                ) {
+                    Text(text = "Start", fontSize = 16.sp)
+                }
+                Button(
+                    onClick = { showEndDatePicker = true },
+                    modifier = Modifier
+                        .width(150.dp)
+                        .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
+                ) {
+                    Text(text = "End", fontSize = 16.sp)
+                }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(text = formattedStartDate)
+                Spacer(modifier = Modifier.padding(16.dp))
+                Text(text = formattedEndDate)
             }
         }
 
@@ -290,14 +297,42 @@ fun TravelModeCard(
       //          onDateSelected = { date -> pickedEndDate = date }
       //      )
       //  }
-   // }
+    }
 }
 
+
+/*
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerDialog(
     onDismissRequest: () -> Unit,
     onDateSelected: (LocalDate) -> Unit
 ) {
-    // DatePicker implementation
-    // ...
+    val dateDialogState = rememberMaterialDialogState()
+
+    MaterialDialog(
+        dialogState = dateDialogState,
+        shape = RoundedCornerShape(10.dp),
+        buttons = {
+            positiveButton(text = "Ok") {
+                // Handle date selected logic here
+                onDateSelected(/* selected date */)
+            }
+            negativeButton(text = "Cancel") {
+                onDismissRequest()
+            }
+        }
+    ) {
+        datepicker(
+            initialDate = LocalDate.now(),
+            title = "Pick a date",
+            colors = DatePickerDefaults.colors(
+                headerBackgroundColor = MaterialTheme.colorScheme.primary,
+                dateActiveBackgroundColor = MaterialTheme.colorScheme.primary
+            )
+        ) { date ->
+            onDateSelected(date)
+        }
+    }
 }
+*/
