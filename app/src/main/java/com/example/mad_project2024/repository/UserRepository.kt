@@ -17,13 +17,14 @@ import javax.inject.Inject
 
 class UserRepository @Inject constructor(
                                          private val tokenManager: TokenManager
-){
+) {
     private val api = RetrofitClient.api
 
     suspend fun getSelfUser(): Result<ListUser> {
         return withContext(Dispatchers.IO) {
             try {
-                val token = "Bearer ${tokenManager.getToken()?.access_token}" // Adjust as needed to retrieve token
+                val token =
+                    "Bearer ${tokenManager.getToken()?.access_token}"
                 val response = api.getSelfUser(token).execute()
                 if (response.isSuccessful) {
                     val user = response.body()!!
@@ -40,36 +41,7 @@ class UserRepository @Inject constructor(
         }
     }
 
-/*
-    suspend fun getAllUsers(token: String): Result<List<ListUser>> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = api.getAllUsers("Bearer $token").execute()
-                if (response.isSuccessful) {
-                    Result.success(response.body()!!)
-                } else {
-                    Result.failure(Exception("Failed to fetch all users: ${response.message()}"))
-                }
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
-        }
-    }
-*/
-    suspend fun getUser(nickName: String, token: String): Result<ListUser> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = api.getUser(nickName, "Bearer $token").execute()
-                if (response.isSuccessful) {
-                    Result.success(response.body()!!)
-                } else {
-                    Result.failure(Exception("Failed to fetch user: ${response.message()}"))
-                }
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
-        }
-    }
+
 
     suspend fun selfUpdateUser(updateData: SelfUpdateUser, token: String): Result<MessageResponse> {
         return withContext(Dispatchers.IO) {
@@ -85,64 +57,4 @@ class UserRepository @Inject constructor(
             }
         }
     }
-/*
-    suspend fun upgradeUser(nickName: String, token: String): Result<MessageResponse> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = api.upgradeUser(nickName, "Bearer $token").execute()
-                if (response.isSuccessful) {
-                    Result.success(response.body()!!)
-                } else {
-                    Result.failure(Exception("Failed to upgrade user: ${response.message()}"))
-                }
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
-        }
-    }
-
-    suspend fun downgradeUser(nickName: String, token: String): Result<MessageResponse> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = api.downgradeUser(nickName, "Bearer $token").execute()
-                if (response.isSuccessful) {
-                    Result.success(response.body()!!)
-                } else {
-                    Result.failure(Exception("Failed to downgrade user: ${response.message()}"))
-                }
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
-        }
-    }
-
-    suspend fun selfDeleteUser(token: String): Result<MessageResponse> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = api.selfDeleteUser("Bearer $token").execute()
-                if (response.isSuccessful) {
-                    Result.success(response.body()!!)
-                } else {
-                    Result.failure(Exception("Failed to delete self user: ${response.message()}"))
-                }
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
-        }
-    }
-
-    suspend fun deleteUser(nickName: String, token: String): Result<MessageResponse> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = api.deleteUser(nickName, "Bearer $token").execute()
-                if (response.isSuccessful) {
-                    Result.success(response.body()!!)
-                } else {
-                    Result.failure(Exception("Failed to delete user: ${response.message()}"))
-                }
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
-        }
-    }*/
 }

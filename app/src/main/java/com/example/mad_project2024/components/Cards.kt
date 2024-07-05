@@ -1,7 +1,5 @@
-package com.example.mad_project2024.screens
+package com.example.mad_project2024.components
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,108 +11,18 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.mad_project2024.components.TopAppBar
-import com.example.mad_project2024.components.BottomBar
-import com.example.mad_project2024.models.InformationResponse
-import com.example.mad_project2024.models.SubCategory
 import com.example.mad_project2024.models.ContentData
+import com.example.mad_project2024.models.Country
+import com.example.mad_project2024.models.SubCategory
 import com.example.mad_project2024.navigation.Screen
-import com.example.mad_project2024.viewmodels.InformationViewModel
-import com.example.mad_project2024.viewmodels.AuthViewModel
-/*
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-fun MainCategoryScreen(
-    navController: NavController,
-    viewModel: InformationViewModel = hiltViewModel(),
-    authViewModel: AuthViewModel = hiltViewModel(),
-    countryCode: String,
-    mode: String
-) {
-    val informationState by viewModel.informationState.collectAsState()
-    val authState by authViewModel.authState.collectAsState()
-    var selectedSubCategory by remember { mutableStateOf<SubCategory?>(null) }
-
-    LaunchedEffect(countryCode) {
-        Log.d("MainCategoryScreen", "Fetching information for country: $countryCode")
-        viewModel.fetchInformation(countryCode)
-    }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = selectedSubCategory?.title ?: "Categories") },
-                actions = {
-                    if (selectedSubCategory != null && !authState.isGuest) {
-                        IconButton(onClick = { navController.navigate("${Screen.SuggestionsScreen.route}/${selectedSubCategory!!.title}") }) {
-                            Icon(imageVector = Icons.Default.Add, contentDescription = "Add")
-                        }
-                    }
-                }
-            )
-        },
-        bottomBar = { BottomBar(navController) }
-    ) { innerPadding ->
-        informationState.information?.let { information ->
-            when (mode) {
-                "interaction" -> {
-                    if (selectedSubCategory == null) {
-                        // Directly show "Communication" category and its subcategories
-                        val communicationCategory = information.categories.find { it.title == "Communication" }
-                        communicationCategory?.let {
-                            SubCategoryList(navController, it.subCategories, authState.isGuest)
-                        }
-                    } else {
-                        SubCategoryContentView(subCategory = selectedSubCategory!!, isGuest = authState.isGuest, navController)
-                    }
-                }
-                "travel" -> {
-                    if (selectedSubCategory == null) {
-                        // Show all categories for travel mode
-                        MainView(navController, information, countryCode, onSubCategoryClick = { subCategory ->
-                            selectedSubCategory = subCategory
-                        })
-                    } else {
-                        SubCategoryContentView(subCategory = selectedSubCategory!!, isGuest = authState.isGuest, navController)
-                    }
-                }
-                else -> {
-                    // Handle other modes if any
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun MainView(
-    navController: NavController,
-    informationResponse: InformationResponse,
-    countryCode: String,
-    onSubCategoryClick: (SubCategory) -> Unit
-) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        items(informationResponse.categories) { category ->
-            if (category.title != "Public Holidays") { // Comment out Public Holidays
-                CategoryCard(navController, category.title, category.description, category.subCategories, onSubCategoryClick)
-                Spacer(Modifier.size(56.dp))
-            }
-        }
-    }
-}
+import com.example.mad_project2024.ui.theme.MovieAppMAD24Theme
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun CategoryCard(
@@ -130,11 +38,9 @@ fun CategoryCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -189,9 +95,7 @@ fun SubCategoryCard(
             )
             Text(
                 text = subCategory.description,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
                 textAlign = TextAlign.Left,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -255,4 +159,145 @@ fun ContentCard(contentData: ContentData, isGuest: Boolean) {
         }
     }
 }
-*/
+
+
+@Composable
+fun InteractionModeCard(
+    title: String,
+    description: String,
+    navController: NavController,
+    selectedCountry: Country?
+) {
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                selectedCountry?.let {
+                    navController.navigate("${Screen.InteractionModeScreen.route}/${it.code}")
+                }
+            }
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = title,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge
+            )
+            Spacer(Modifier.size(8.dp))
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TravelModeCard(
+    title: String,
+    description: String,
+    navController: NavController,
+    selectedCountry: Country?
+) {
+   //var pickedStartDate by remember { mutableStateOf(LocalDate.now()) }
+   //var pickedEndDate by remember { mutableStateOf(LocalDate.now().plusDays(3)) }
+
+   //var showStartDatePicker by remember { mutableStateOf(false) }
+   //var showEndDatePicker by remember { mutableStateOf(false) }
+
+   //val formattedStartDate by remember {
+   //    derivedStateOf {
+   //        DateTimeFormatter.ofPattern("MMM dd yyyy").format(pickedStartDate)
+   //    }
+   //}
+   //val formattedEndDate by remember {
+   //    derivedStateOf {
+   //        DateTimeFormatter.ofPattern("MMM dd yyyy").format(pickedEndDate)
+   //    }
+   //}
+
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                selectedCountry?.let {
+                    navController.navigate(Screen.TravelModeScreen.createRoute(it.code))
+                }
+            }
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = title,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge
+            )
+            Spacer(Modifier.size(8.dp))
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Spacer(Modifier.size(16.dp))
+            Text(
+                text = "Pick your Dates",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        //    Row(
+        //        modifier = Modifier.fillMaxWidth(),
+        //        horizontalArrangement = Arrangement.Center
+        //    ) {
+        //        Button(
+        //            onClick = { showStartDatePicker = true },
+        //            modifier = Modifier
+        //                .width(150.dp)
+        //                .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
+        //        ) {
+        //            Text(text = "Start", fontSize = 16.sp)
+        //        }
+        //        Button(
+        //            onClick = { showEndDatePicker = true },
+        //            modifier = Modifier
+        //                .width(150.dp)
+        //                .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
+        //        ) {
+        //            Text(text = "End", fontSize = 16.sp)
+        //        }
+        //    }
+        //    Row(
+        //        modifier = Modifier.fillMaxWidth(),
+        //        horizontalArrangement = Arrangement.Center
+        //    ) {
+        //        Text(text = formattedStartDate)
+        //        Spacer(modifier = Modifier.padding(16.dp))
+        //        Text(text = formattedEndDate)
+            }
+        }
+
+        // DatePicker dialogs
+      //  if (showStartDatePicker) {
+      //      DatePickerDialog(
+      //          onDismissRequest = { showStartDatePicker = false },
+      //          onDateSelected = { date -> pickedStartDate = date }
+      //      )
+      //  }
+//
+      //  if (showEndDatePicker) {
+      //      DatePickerDialog(
+      //          onDismissRequest = { showEndDatePicker = false },
+      //          onDateSelected = { date -> pickedEndDate = date }
+      //      )
+      //  }
+   // }
+}
+
+@Composable
+fun DatePickerDialog(
+    onDismissRequest: () -> Unit,
+    onDateSelected: (LocalDate) -> Unit
+) {
+    // DatePicker implementation
+    // ...
+}

@@ -13,14 +13,12 @@ import javax.inject.Inject
 
 data class InformationState(
     val information: InformationResponse? = null,
-    val errorMessage: String? = null,
-    val role: String? = null
+    val isGuest: Boolean = true // This should be set based on the actual user status
 )
 
 @HiltViewModel
 class InformationViewModel @Inject constructor(
-    private val informationRepository: InformationRepository,
-    private val userRepository: UserRepository
+    private val repository: InformationRepository
 ) : ViewModel() {
 
     private val _informationState = MutableStateFlow(InformationState())
@@ -28,18 +26,11 @@ class InformationViewModel @Inject constructor(
 
     fun fetchInformation(countryCode: String) {
         viewModelScope.launch {
-            val userResult = userRepository.getSelfUser()
-            if (userResult.isSuccess) {
-                val user = userResult.getOrNull()
-                val role = user?.role ?: "GUEST"
-                val result = informationRepository.getInformation(countryCode)
-                if (result.isSuccess) {
-                    _informationState.value = InformationState(information = result.getOrNull(), role = role)
-                } else {
-                    _informationState.value = InformationState(errorMessage = result.exceptionOrNull()?.message, role = role)
-                }
+            val result = repository.getInformation(countryCode)
+            if (result.isSuccess) {
+                _informationState.value = InformationState(information = result.getOrNull())
             } else {
-                _informationState.value = InformationState(errorMessage = userResult.exceptionOrNull()?.message, role = "GUEST")
+                // Handle error state
             }
         }
     }
