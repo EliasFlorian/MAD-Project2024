@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -44,7 +45,9 @@ fun ContentScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(16.dp),
+            contentPadding =  PaddingValues(60.dp),
+            verticalArrangement =  Arrangement.Center
         ) {
             items(subCategory.data) { contentData ->
                 ContentCard(contentData, isGuest)

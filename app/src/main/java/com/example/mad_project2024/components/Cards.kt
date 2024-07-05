@@ -127,7 +127,8 @@ fun SubCategoryContentView(subCategory: SubCategory, isGuest: Boolean, navContro
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement =  Arrangement.Center
     ) {
         items(subCategory.data) { contentData ->
             ContentCard(contentData, isGuest)
@@ -212,6 +213,7 @@ fun TravelModeCard(
 
    var showStartDatePicker by remember { mutableStateOf(false) }
    var showEndDatePicker by remember { mutableStateOf(false) }
+    val dateDialgState = rememberMaterialDialogState()
 
    val formattedStartDate by remember {
        derivedStateOf {
@@ -257,7 +259,8 @@ fun TravelModeCard(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Button(
-                    onClick = { showStartDatePicker = true },
+                    onClick = { showStartDatePicker = true
+                        dateDialgState.show()},
                     modifier = Modifier
                         .width(150.dp)
                         .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
@@ -265,7 +268,8 @@ fun TravelModeCard(
                     Text(text = "Start", fontSize = 16.sp)
                 }
                 Button(
-                    onClick = { showEndDatePicker = true },
+                    onClick = { showEndDatePicker = true
+                              dateDialgState.show()},
                     modifier = Modifier
                         .width(150.dp)
                         .padding(start = 16.dp, bottom = 10.dp, end = 16.dp)
@@ -283,25 +287,24 @@ fun TravelModeCard(
             }
         }
 
-        // DatePicker dialogs
-      //  if (showStartDatePicker) {
-      //      DatePickerDialog(
-      //          onDismissRequest = { showStartDatePicker = false },
-      //          onDateSelected = { date -> pickedStartDate = date }
-      //      )
-      //  }
-//
-      //  if (showEndDatePicker) {
-      //      DatePickerDialog(
-      //          onDismissRequest = { showEndDatePicker = false },
-      //          onDateSelected = { date -> pickedEndDate = date }
-      //      )
-      //  }
+
+          if (showStartDatePicker) {
+              DatePickerDialog(
+                  onDismissRequest = { showStartDatePicker = false },
+                  onDateSelected = { date -> pickedStartDate = date }
+              )
+          }
+
+          if (showEndDatePicker) {
+              DatePickerDialog(
+                  onDismissRequest = { showEndDatePicker = false },
+                  onDateSelected = { date -> pickedEndDate = date }
+              )
+          }
     }
 }
 
 
-/*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerDialog(
@@ -315,8 +318,7 @@ fun DatePickerDialog(
         shape = RoundedCornerShape(10.dp),
         buttons = {
             positiveButton(text = "Ok") {
-                // Handle date selected logic here
-                onDateSelected(/* selected date */)
+
             }
             negativeButton(text = "Cancel") {
                 onDismissRequest()
@@ -325,14 +327,12 @@ fun DatePickerDialog(
     ) {
         datepicker(
             initialDate = LocalDate.now(),
-            title = "Pick a date",
-            colors = DatePickerDefaults.colors(
-                headerBackgroundColor = MaterialTheme.colorScheme.primary,
-                dateActiveBackgroundColor = MaterialTheme.colorScheme.primary
+            title = "Pick a date"
+
             )
-        ) { date ->
+         { date ->
             onDateSelected(date)
         }
     }
 }
-*/
+
